@@ -1,0 +1,17 @@
+.searchForm {
+	border: solid black 1px;
+	border-radius: 0.6em;
+	width: 40%;
+	padding: 1em 1em 1.5em 1em;
+	line-height: 0.5em;
+}
+
+.hidden {
+	display: none;
+}
+
+.advancedLink {
+	font-size: 0.75em;
+	position: relative;
+	top: 1em;
+}
