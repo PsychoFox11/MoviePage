@@ -4,7 +4,7 @@
 	<meta charset="UTF-8" />
 	<title>Console</title>
 	<link rel="stylesheet" type="text/css" href="search.css" />
-	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="jquery-2.1.4.js"></script>
 	<script src="search.js"></script>
 </head>
 
@@ -14,7 +14,7 @@
 	</div>
 	<hr>
 	<div id="searchDiv">
-		<form id="searchForm" class="searchForm">
+		<form enctype="multipart/form-data" id="searchForm" class="searchForm" action="/post">
 			<div>
 				<span>Title:</span>
 				<input type="text" name="title"></input>
@@ -44,10 +44,10 @@
 				</select>
 				<br><br>
 			</div>
-			<span id="advancedLink">
+			<span id="basicButtons">
 				<input type="submit" value="Search"></input>
 				<br>
-				<a href="#" class="advancedLink">Advanced Search</a>
+				<a id="advancedLink" href="#" class="advancedLink">Advanced Search</a>
 			</span>
 			<div id="advanced" class="hidden">
 				<span>Directed by:</span>
@@ -81,8 +81,8 @@
 				<input type='submit' value='Search'></input>
 				<br>
 				<a id="basicLink" href="" class="advancedLink">Basic Search</a>
-			</div>
-			
+			</div>		
 		</form>
 	</div>
+	<div id="outputDiv"></div>
 </body>
