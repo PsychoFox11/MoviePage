@@ -9,6 +9,7 @@ function main() {
 	generateYears();
 }
 
+
 function toggleAdvanced(event) {
 	//event.preventDefault();
 	console.log('advanced toggled');
@@ -60,7 +61,7 @@ function submitForm(event) {
 	.fail(function (err) {
 		$('#outputDiv').html(err.status + ': ' + err.statusText);
 	});
-	}*/
+}*/
 
 
 // xhr method
