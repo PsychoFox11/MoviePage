@@ -1,0 +1,38 @@
+body {
+	padding: 0;
+	margin: 0;
+}
+
+.mainDiv {
+	position: relative;
+}
+
+.mainHeader {
+	height: 5em;
+	text-align: center;
+	top: 0;
+	left: 0;
+	width: 80%;
+	position: fixed;
+	background-color: white;
+	z-index: 1;
+
+}
+
+.mainBody {
+	width: 80%;
+	height: 80%;
+	position: relative;
+	top: 5em;
+	margin: 0;
+	padding: 0;
+}
+
+.sideBar {
+	width: 20%;
+	height: 100%;
+	position: fixed;
+	right: 0;
+	top: 0;
+
+}

@@ -1,0 +1,77 @@
+
+
+<div id="searchDiv">
+	<h1>Search for Movies</h1>
+	<hr>
+	<form enctype="multipart/form-data" id="searchForm" class="searchForm" action="/post">
+		<div>
+			<span>Title:</span>
+			<input type="text" name="title"></input>
+			<br><br>
+			<span>Content type:</span>
+			<span id="releaseType">
+				<input type="radio" value="any" name="release" checked="checked">Any</input>
+				<input type="radio" value="tv" name="release">TV Show</input>
+				<input type="radio" value="movie" name="release">Movie</input>
+			</span>
+			<br><br><br>
+			<span>Format:</span>
+			<select id="format" name="format">
+				<option value="any" selected>Any</option>
+				<option value="dvd">DVD</option>
+				<option value="bluray">Blu-ray</option>
+			</select>
+			<span id="span3d" class="hidden">
+				<input type="radio" value="any" name="3D" checked="checked">Any</input>
+				<input type="radio" value="2D" name="3D">2D</input>			
+				<input type="radio" value="3D" name="3D">3D</input>
+			</span>
+			<br><br>
+			<span>Year:</span>
+			<select id="year">
+				<option value="2015" selected>2015</option>
+			</select>
+			<br><br>
+		</div>
+		<span id="basicButtons">
+			<input type="submit" value="Search"></input>
+			<br>
+			<a id="advancedLink" href="#" class="advancedLink">Advanced Search</a>
+		</span>
+		<div id="advanced" class="hidden">
+			<span>Directed by:</span>
+			<input type="text" name="director"></input>
+			<br><br>
+			<span>Starring:</span>
+			<input type="text" name="actors"></input>
+			<br><br>
+			<span>Search in notes:</span>
+			<input type="text" name="notes"></input>
+			<br><br>
+			<span>Search by movie #:</span>
+			<input type="number" name="number"></input>
+			<br><br>
+			<span>Packaging type:</span>
+			<select id="box" name="box">
+				<option value="any" selected>Any</option>
+				<option value="dvd">DVD</option>
+				<option value="bluray">Blu-ray</option>
+				<option value="bluray3d">Blu-ray 3D</option>
+				<option value="multi">Multi-movie box set</option>
+				<option value="fancy">Single-movie deluxe packaging</option>
+				<option value="series">TV series box set</option>
+				<optgroup label="Combo set">
+					<option value="bd-dvd">Blu-ray/DVD</option>
+					<option value="bd-3d">Blu-ray 3D/Blu-ray</option>
+					<option value="3d-bd-dvd">Blu-ray 3D/Blu-ray/DVD</option>
+				</optgroup>
+			</select>
+			<br><br>
+			<input type='submit' value='Search'></input>
+			<br>
+			<a id="basicLink" href="#" class="advancedLink">Basic Search</a>
+		</div>		
+	</form>
+	<div id="outputDiv"></div>
+	<div id="tableDiv"></div>
+</div>
