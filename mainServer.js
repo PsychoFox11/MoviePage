@@ -9,18 +9,20 @@ server;
 //set base dir of static files
 app.use(express.static(base));
 
-//parse multipart/form-data
+// multer parses multiform data, then we set upload dir
 app.use(multer({dest: './uploads/'}));
 
 app.post('/upload', function (req, res) {
-	console.log(req.body);
-	console.log(req.files);
-	res.send('<p>' + JSON.stringify(req.files) + '</p>');
-	//delete uploaded files after processing.
-	for (var file in req.files) {
-//		fs.unlink.req.files[file].path); //unlink deletes
+	for (var key in req.body) {
+		console.log(req.body[key]);
 	}
+	//console.log(req.body);
+	//res.json(JSON.parse(req.body['jsonDb']));
+	res.send(req.body);
 });
+
+//parse multipart/form-data
+//app.use(multer());
 
 app.post('/post', function(req, res) {
 	var returnString = '';

@@ -1,0 +1,18 @@
+<table>
+	<thead>
+		<tr>
+			<% for (var key in objects[0]) { %>
+				<th><%= key %></th>
+			<% } %>
+		</tr>
+	</thead>
+	<tbody>
+		<% for (var i = 0; i < objects.length; i++) { %>
+		<tr>
+		<% for (var key in objects[i]) { %>
+			<td><%= objects[i][key] %></td>
+		<% } %>
+		</tr>
+		<% } %>
+	</tbody>
+</table>

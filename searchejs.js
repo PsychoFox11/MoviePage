@@ -53,33 +53,6 @@ function submitForm(event) {
 	console.log('blah');
 	console.log(this.action);
 	
-// jquery method (broken)
-/*	$.post(url, {contentType: false, processData: false, cache: false})
-	.done(function (data) {
-		$('#outputDiv').html(data);
-	})
-	.fail(function (err) {
-		$('#outputDiv').html(err.status + ': ' + err.statusText);
-	});
-}*/
-
-
-// xhr method
-/*	xhr.onerror = function (event) {
-		output.html ='Error: ' + xhr.status + ' ' + xhr.statusText;
-	};
-
-	xhr.onreadystatechange = function (event) {
-		var output = $('#outputDiv');
-		if (xhr.DONE === xhr.readyState && 200 === xhr.status) {
-			output.html(xhr.responseText);
-		}
-	};
-
-	xhr.open(method, url);
-	xhr.send(data);
-} */
-
 $.ajax({
 	url: this.action,
 	data: data,
@@ -92,5 +65,3 @@ $.ajax({
 	}
 });
 }
-
-//$(main);
