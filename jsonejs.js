@@ -50,6 +50,7 @@ function uploadTable(objects) {
 function drawTable(objects) {
     var result = new EJS({url: 'views/table.ejs'}).render({objects: objects});
 
+    $('#outputDiv').empty();
     $('#outputDiv').append(result);
 }
 
@@ -62,6 +63,8 @@ function createEditForm(objects) {
     for (var key in objects[0]) {
         html += '<span>' + key + ': </span><input type=\"text\" name=\"' + key + '\"><br><br>';
     }
+    // Clear form
+    $formDiv.empty();
     // Add html to form
     $formDiv.append(html);
     // Unhide form
@@ -98,6 +101,7 @@ function addItem(event) {
     objects.push(newObj);
 
     // Redraw table
+    createEditForm(objects);
     drawTable(objects);
 
 }
