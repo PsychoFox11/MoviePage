@@ -1,9 +1,19 @@
 function main() {
+    $('#signInForm').submit(login);
     fetchSidebar();
     $('#searchClick').click(openSearch);
     $('#uploadClick').click(openUploader);
 }
 
+function login(event) {
+    event.preventDefault();
+ 
+    $('#mainHeader').removeClass('noSidebar').addClass('withSidebar');
+    $('#loginDiv').addClass('hidden');
+    $('#sideBar').removeClass('hidden');
+    $('#mainBodyDiv').removeClass('hidden noSidebar').addClass('withSidebar');
+    openSearch();
+}
 
 function fetchSidebar() {
     var username = 'Jon Walker',
@@ -12,7 +22,9 @@ function fetchSidebar() {
 }
 
 function openSearch(event) {
-    event.preventDefault();
+    if (event) {
+        event.preventDefault();
+    }
     var $body = $('#mainBodyDiv');
     
     if ($('#searchDiv').length !== 0){

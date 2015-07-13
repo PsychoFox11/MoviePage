@@ -18,7 +18,7 @@
 
 <body>
 	<div id="mainDiv" class="mainDiv">
-		<div id="mainHeader" class="mainHeader">
+		<div id="mainHeader" class="mainHeader noSidebar">
 			<img id="cornerLogo" src="images/projector.gif" width="179" height="300"></img>
 			<img id="hddvdLogo" src="images/hddvd.png" width="1280" height="473"></img>
 			<img id="dvdLogo" src="images/dvd.png" width="400" height="176"></img>
@@ -27,10 +27,23 @@
 			<p class="headerText"><b>Jon's Movie Page</b></p>
 			<!-- <hr id="headerLine"> -->
 		</div>
-		<div id="sideBar" class="sideBar">
+		
+		<div id="sideBar" class="sideBar hidden">
 		</div>
-		<div id="mainBodyDiv" class="mainBodyDiv">
-
+		<div id="mainBodyDiv" class="mainBodyDiv noSidebar">
+			<div id="loginDiv" class="loginDiv">
+				<img id="leftReel" src="images/moviereel.jpg" width="270" height="270"</img>
+				<img id="rightReel" src="images/moviereel.jpg" width="270" height="270"</img>
+				<form action="" method="POST" id="signInForm">
+					<p id="signText" class="centered">Sign in</p>
+					<span "username">Username</span><br>
+					<input type="text" name="username" placeholder="username or email" required></input><br><br>
+					<span "password">Password</span><br>
+					<input type="password" name="password" placeholder="password" required></input><br><br>
+					<input id="loginSubmit" type="submit" name="submit" value="Login"></input>
+					<a id="forgotLink" href="">Forgot password?</a>
+				</form>
+			</div>
 		</div>
 	</div>
 </body>
