@@ -1,32 +1,33 @@
-"use strict";
+'use strict';
 
 var jon = {
-	tsv2json: function(tsv) {
-		var json = [],
-		header = [],
-		lines = [],
-		tempMovie = {},
-		singleLine, i, j;
+    tsv2json: function (tsv) {
+        var json = [],
+        header = [],
+        lines = [],
+        tempMovie = {},
+        singleLine, i, j;
 
-		lines = tsv.split('\n');
-		header = lines[0].split('\t');
+        lines = tsv.split('\n');
+        header = lines[0].split('\t');
 
-		for (i = 1; i < lines.length; i++) {
-			singleLine = lines[i].split('\t');
-			tempMovie = {};
-				for (j = 0; j < header.length; j++) {
-					tempMovie[header[j]] = singleLine[j];
-				}
-				json.push(tempMovie);
-		}
+        for (i = 1; i < lines.length; i++) {
+            singleLine = lines[i].split('\t');
+            tempMovie = {};
+            for (j = 0; j < header.length; j++) {
+                tempMovie[header[j]] = singleLine[j];
+            }
+            json.push(tempMovie);
+        }
 
-		return json;
-	}
+        return json;
+    }
 };
 
-// uncomment below to test with node
+// Uncomment below to test with node
 
-/*var tsvtest = 'column1\tcolumn2\tcolumn3\tcolumn4\nval1\tval2\tval3\tval4\nval11\tval22\tval33\tval44';
+/* Testing stuff
+var tsvtest = 'column1\tcolumn2\tcolumn3\tcolumn4\nval1\tval2\tval3\tval4\nval11\tval22\tval33\tval44';
 var jsonlist = {};
 
 console.log('stuff');

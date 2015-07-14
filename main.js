@@ -1,3 +1,6 @@
+/* global jon, EJS*/
+'use strict';
+
 function main() {
     $('#signInForm').submit(login);
     fetchSidebar();
@@ -7,7 +10,7 @@ function main() {
 
 function login(event) {
     event.preventDefault();
- 
+
     $('#mainHeader').removeClass('noSidebar').addClass('withSidebar');
     $('#loginDiv').addClass('hidden');
     $('#sideBar').removeClass('hidden');
@@ -25,28 +28,30 @@ function openSearch(event) {
     if (event) {
         event.preventDefault();
     }
-    var $body = $('#mainBodyDiv');
-    
-    if ($('#searchDiv').length !== 0){
+    var $body = $('#mainBodyDiv'),
+    result;
+
+    if ($('#searchDiv').length !== 0) {
         return;
     }
-    $body.empty(); //clear 'body' div
+    $body.empty(); // Clear 'body' div
     result = new EJS({url: 'views/search.ejs'}).render();
     $body.append(result);
-    loadSearch(); //from searchejs.js
+    loadSearch(); // From searchejs.js
 }
 
 function openUploader(event) {
     event.preventDefault();
-    var $body = $('#mainBodyDiv');
+    var $body = $('#mainBodyDiv'),
+    result;
 
-    if ($('#uploadDiv').length !== 0){
+    if ($('#uploadDiv').length !== 0) {
         return;
     }
-    $body.empty(); //clear 'body' div
+    $body.empty(); // Clear 'body' div
     result = new EJS({url: 'views/json.ejs'}).render();
     $body.append(result);
-    loadUpload(); //from jsonejs.js
+    loadUpload(); // From jsonejs.js
 }
 
 $(main);
