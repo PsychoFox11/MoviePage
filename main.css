@@ -1,160 +1,187 @@
-html, body {
-	padding: 0;
-	margin: 0;
-	height: 100%;
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
 }
-
 h1 {
-	text-align: center;
+  text-align: center;
 }
-
-#loginDiv {
-	height: 100%;
-}
-
-#headerLine {
-	margin-bottom: 0;
-}
-
-#rightReel {
-    position: absolute;
-    top: 51%;
-    right: 0;
-    transform: translate(0%, -50%);
-}
-
-#leftReel {
-    position: absolute;
-    top: 51%;
-    left: 0;
-    transform: translate(0%, -50%);
-}
-
-#signIn {
-    border: solid #000000 .1em;
-    padding: 0em 1em 1em 1em;
-    width: 40%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-#signInForm {
-   position: absolute;
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   padding: 3em;
-   border: solid red 2px;    
-   border-radius: 25px;
-}
-
-#forgotLink {
-    position: absolute;
-    left: 0;
-    bottom: -1.5em;
-    font-size: 0.75em;
-}
-
-#submit {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0%);
-}
-
-#signText {
-    padding: 0;
-    margin: 0;
-    position: relative;
-    bottom: 1.5em;
-}
-
 .centered {
-    text-align: center;
+  text-align: center;
 }
-
 .mainDiv {
-	position: relative;
-	height: 100%;
+  position: relative;
+  height: 100%;
 }
-
 .mainHeader {
-	height: 8.5em;
-	line-height: 7.5em;
-	top: 0;
-	left: 0;
-	position: fixed;
-	background-color: white;
-	border-bottom: solid #BBB 2px;
-	z-index: 1;
+  height: 8.5em;
+  line-height: 7.5em;
+  top: 0;
+  left: 0;
+  position: fixed;
+  background-color: white;
+  border-bottom: solid #BBB 2px;
+  z-index: 1;
 }
-
 .mainBodyDiv {
-	height: calc(100% - 8.5em);
-	position: absolute;
-	top: 8.5em;
-	left: 0em;
-	margin: 0;
-	padding: 0;
-	overflow-y: auto;
+  height: calc(100% - 8.5em);
+  position: absolute;
+  top: 8.5em;
+  left: 0em;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
 }
-
 .noSidebar {
-	right: 0;
+  right: 0;
 }
-
 .withSidebar {
-	right: 13em;
+  right: 13em;
 }
-
 .hidden {
-	display: none;
+  display: none;
 }
-
 .headerText {
-	text-align: center;
-	font-size: 3.5em;
-	font-family: arial;
-	margin: 0;
-	padding: 0;
+  text-align: center;
+  font-size: 3.5em;
+  font-family: arial;
+  margin: 0;
+  padding: 0;
 }
-
+#loginDiv {
+  height: 100%;
+}
+#headerLine {
+  margin-bottom: 0;
+}
+#rightReel {
+  position: absolute;
+  top: 51%;
+  right: 0;
+  transform: translate(0%, -50%);
+}
+#leftReel {
+  position: absolute;
+  top: 51%;
+  left: 0;
+  transform: translate(0%, -50%);
+}
+#signIn {
+  border: solid #000000 .1em;
+  padding: 0em 1em 1em 1em;
+  width: 40%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#signInForm {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 3em;
+  border: solid red 2px;
+  border-radius: 25px;
+}
+#forgotLink {
+  position: absolute;
+  left: 0;
+  bottom: -1.5em;
+  font-size: 0.75em;
+}
+#submit {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+#signText {
+  padding: 0;
+  margin: 0;
+  position: relative;
+  bottom: 1.5em;
+}
 #cornerLogo {
-	height: 7.5em;
-	width: 4.5em;
-	position: absolute;
-	left: 0;
-	top: 0;
+  height: 7.5em;
+  width: 4.5em;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
-
 #hddvdLogo {
-	height: 2.5em;
-	width: 6.7em;
-	position: absolute;
-	top: 2.5em;
-	right: 0.5em;
+  height: 2.5em;
+  width: 6.7em;
+  position: absolute;
+  top: 2.5em;
+  right: 0.5em;
 }
-
 #dvdLogo {
-	height: 2.5em;
-	width: 5.7em;
-	position: absolute;
-	top: 2.5em;
-	right: 7.2em;
+  height: 2.5em;
+  width: 5.7em;
+  position: absolute;
+  top: 2.5em;
+  right: 7.2em;
 }
-
 #blurayLogo {
-	height: 2.5em;
-	width: 4.8em;
-	position: absolute;
-	top: 0;
-	right: 4.8em;
+  height: 2.5em;
+  width: 4.8em;
+  position: absolute;
+  top: 0;
+  right: 4.8em;
 }
-
 #bluray3dLogo {
-	height: 2.5em;
-	width: 4.3em;
-	position: absolute;
-	top: 0;
-	right: 0.5em;
+  height: 2.5em;
+  width: 4.3em;
+  position: absolute;
+  top: 0;
+  right: 0.5em;
+}
+td,
+tr {
+  border: solid black 1px;
+  padding: .5em;
+}
+#addItemForm {
+  border: solid black 1px;
+  border-radius: 20px;
+  padding: 1em;
+  width: 40%;
+}
+#uploadDiv {
+  margin-top: 0.5em;
+  padding: 1em;
+}
+.searchForm {
+  border: solid black 1px;
+  border-radius: 0.6em;
+  width: 40%;
+  padding: 1em 1em 1.5em 1em;
+  line-height: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+}
+.advancedLink {
+  font-size: 0.75em;
+  position: relative;
+  top: 1em;
+}
+.sideBar {
+  width: 13em;
+  height: 100%;
+  position: fixed;
+  right: 0;
+  top: 0;
+  border-left: solid #000 4px;
+  box-sizing: border-box;
+  z-index: 1;
+}
+.SBfooter {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 0.5em;
+  width: 100%;
+  text-align: center;
+}
+.SBmain {
+  margin: 0.5em;
 }
