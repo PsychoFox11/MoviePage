@@ -1,6 +1,8 @@
 /* global jon, EJS*/
 'use strict';
 
+var jon = require('./jonslibrary.js');
+
 function loadUpload() {
     $('#file').on('change', loadFile);
 }
@@ -105,3 +107,5 @@ function addItem(event) {
     drawTable(objects);
 
 }
+
+module.exports = loadUpload;

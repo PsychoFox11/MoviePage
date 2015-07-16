@@ -24,6 +24,8 @@ var jon = {
     }
 };
 
+module.exports = jon;
+
 // Uncomment below to test with node
 
 /* Testing stuff

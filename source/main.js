@@ -1,6 +1,9 @@
 /* global jon, EJS*/
 'use strict';
 
+var loadSearch = require('./searchejs.js'),
+    loadUpload = require('./jsonejs.js');
+
 function main() {
     $('#signInForm').submit(login);
     fetchSidebar();

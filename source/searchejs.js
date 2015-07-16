@@ -66,3 +66,5 @@ function submitForm(event) {
         }
     });
 }
+
+module.exports = loadSearch;
