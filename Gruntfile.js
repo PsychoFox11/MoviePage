@@ -36,7 +36,7 @@ module.exports = function (grunt) {
             }
         },
         exec: {
-            deploy: 'cp -r  *.js *.html *.css views deploy'
+            deploy: 'rm -r public/* && cp -r  bundle*.js *.html *.css views images libraries public'
         },
         less: {
             development: {
@@ -54,6 +54,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
-    grunt.registerTask('default', ['jshint', 'jscs', 'exec:deploy']);
+    grunt.registerTask('default', ['jshint', 'jscs', 'less', 'browserify', 'uglify', 'exec:deploy']);
     grunt.registerTask('bundle', ['browserify', 'uglify']);
 };
