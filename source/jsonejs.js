@@ -1,4 +1,4 @@
-/* global jon, EJS*/
+/* global EJS*/
 'use strict';
 
 var jon = require('./jonslibrary.js');

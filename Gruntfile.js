@@ -9,10 +9,10 @@ module.exports = function (grunt) {
                 jshintrc: true,
                 ignores: ['node_module/**/*', 'libraries/**/*']
             },
-            all: ['*.js']
+            all: ['source/*.js', 'mainserver.js', 'gruntfile.js']
         },
         jscs: {
-            src: '*.js',
+            src: ['source/*.js', 'mainserver.js', 'gruntfile.js'],
             options: {
                 config: '../.jscsrc'
             }
@@ -29,7 +29,7 @@ module.exports = function (grunt) {
                 mangle: 'sort',
                 compress: true
             },
-            my_target: {
+            myTarget: {
                 files: {
                     'bundle.min.js': ['bundle.js']
                 }
@@ -47,14 +47,13 @@ module.exports = function (grunt) {
         }
     });
 
-grunt.loadNpmTasks('grunt-contrib-jshint');
-grunt.loadNpmTasks('grunt-jscs');
-grunt.loadNpmTasks('grunt-exec');
-grunt.loadNpmTasks('grunt-contrib-less');
-grunt.loadNpmTasks('grunt-browserify');
-grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-jscs');
+    grunt.loadNpmTasks('grunt-exec');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
-grunt.registerTask('default', ['jshint', 'jscs', 'exec:deploy']);
-
-grunt.registerTask('bundle', ['browserify', 'uglify']);
+    grunt.registerTask('default', ['jshint', 'jscs', 'exec:deploy']);
+    grunt.registerTask('bundle', ['browserify', 'uglify']);
 };
