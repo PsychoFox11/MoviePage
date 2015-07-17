@@ -30,7 +30,9 @@ function fetchSidebar() {
 }
 
 function openAddMovie(event) {
-    event.preventDefault();
+    if (event) {
+        event.preventDefault();
+    }
 
     var body = $('#mainBodyDiv'),
     result;

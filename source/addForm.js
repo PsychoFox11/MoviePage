@@ -2,29 +2,27 @@
 
 function testRender() {
     var searchTypes = {
-        Title: {},
-        Year: {},
-        Format: {},
-        Visuals: {},
-        Length: {}
+        Title: {
+            type: 'text'
+        },
+        Year: {
+            type: 'year'
+        },
+        Format: {
+            type: 'dropdown',
+            values: ['Any', 'Bluray', 'Bluray 3D', 'DVD']
+        },
+        Visuals: {
+            type: 'checkbox',
+            values: ['Color', 'Black and White', '3D']
+        },
+        Length: {
+            type: 'number',
+            values: []
+        }
     };
 
-    searchTypes.Title.type = 'text';
-    searchTypes.Year.type = 'year';
-    searchTypes.Format.type = 'dropdown';
-    searchTypes.Format.values = ['Any', 'Bluray', 'Bluray 3D', 'DVD'];
-    searchTypes.Visuals.type = 'checkbox';
-    searchTypes.Visuals.values = ['Color', 'Black and White', '3D'];
-    searchTypes.Length.type = 'number';
-    searchTypes.Length.values = [0, 400];
     renderForm(searchTypes);
-
-    /* Capital letter for comments
-    searchTypes['Starring'].type = 'textArray';
-    searchTypes['Format'].type = 'checkbox';
-    searchTypes['Format'].values = ['DVD', 'Bluray', 'Bluray 3D'];
-    searchTypes['Package'].type = 'dropdown';
-    searchTypes['Package'].values = ['DVD', 'Bluray', 'Box Set'];*/
 }
 
 function generateYears(min, max) {
