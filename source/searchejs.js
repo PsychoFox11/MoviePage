@@ -1,9 +1,7 @@
 'use strict';
 
 function loadSearch() {
-    var form = $('#searchForm');
-
-    form.submit(submitForm);
+    $('#searchForm').submit(submitForm);
     $('#format').change(toggle3d);
     $('#advancedLink').click(toggleAdvanced);
     $('#basicLink').click(toggleAdvanced);

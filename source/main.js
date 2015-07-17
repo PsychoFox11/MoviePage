@@ -2,13 +2,15 @@
 'use strict';
 
 var loadSearch = require('./searchejs.js'),
-    loadUpload = require('./jsonejs.js');
+    loadUpload = require('./jsonejs.js'),
+    testRender = require('./addForm.js');
 
 function main() {
     $('#signInForm').submit(login);
     fetchSidebar();
     $('#searchClick').click(openSearch);
     $('#uploadClick').click(openUploader);
+    $('#addMovie').click(openAddMovie);
 }
 
 function login(event) {
@@ -25,6 +27,19 @@ function fetchSidebar() {
     var username = 'Jon Walker',
     result = new EJS({url: 'views/sidebar.ejs'}).render({username: username});
     $('#sideBar').append(result);
+}
+
+function openAddMovie(event) {
+    event.preventDefault();
+
+    var body = $('#mainBodyDiv'),
+    result;
+
+    body.empty();
+    result = new EJS({url: 'views/addForm.ejs'}).render();
+    body.append(result);
+
+    testRender(); // From addForm.js
 }
 
 function openSearch(event) {

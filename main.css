@@ -185,3 +185,6 @@ tr {
 .SBmain {
   margin: 0.5em;
 }
+#addForm {
+  border: solid black 1px;
+}
