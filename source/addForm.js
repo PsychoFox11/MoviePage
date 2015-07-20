@@ -18,7 +18,10 @@ function testRender() {
         },
         Length: {
             type: 'number',
-            values: []
+            values: [1]
+        },
+        Released: {
+            type: 'date'
         }
     };
 
@@ -53,7 +56,7 @@ function renderForm(searchTypes) {
         switch (type) {
 
             case 'text': {
-                html += key + ': </span><input type=\"text" name=\"' + key + '\"></input>';
+                html += key + ': </span><input type=\"text\" name=\"' + key + '\"></input>';
                 break;
             }
 
@@ -84,7 +87,7 @@ function renderForm(searchTypes) {
                 break;
             }
 
-            case 'number' : { // Value is array with [min, max]. No value property for unlimited, single value for min, pass null for min for only max.
+            case 'number': { // Value is array with [min, max]. No value property for unlimited, single value for min, pass null for min for only max.
                 text = '';
                 htmlTemp = '';
                 if (values && (values.length > 0)) {
@@ -103,6 +106,11 @@ function renderForm(searchTypes) {
                 }
                 html += key + text + ': </span>';
                 html += '<input type=\"number\" name=\"' + key + '\"' + htmlTemp + '></input>';
+                break;
+            }
+
+            case 'date': {
+                html += key + ': </span><input type=\"date\" name=\"' + key + '\"></input>';
                 break;
             }
         }
