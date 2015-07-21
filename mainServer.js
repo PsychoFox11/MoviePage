@@ -6,6 +6,10 @@ fs = require('fs'), // Require file system
 app = express(),
 base = 'public',
 port = 3000,
+// Mongo stuff
+MongoClient = require('mongodb').MongoClient,
+url = 'mongodb://localhost:27017/mainDB',
+collectionName = 'test',
 server;
 
 // Set base dir of static files
@@ -29,6 +33,31 @@ app.post('/post', function (req, res) {
         returnString += key + ' : ' + req.body[key] + '<br>';
     }
     res.send(returnString);
+});
+
+app.post('/create', function (req, res) {
+    console.log('CREATE: ' + JSON.stringify(req.body));
+    // JSCS res.send(req.body);
+    // JSCS req.body ?? query
+    var query = req.body;
+
+    MongoClient.connect(url, function (err, db) {
+        var collection;
+        if (err) {
+            console.log(err);
+        } else {
+            collection = db.collection(collectionName);
+            collection.insert(query, {w: 1}, function (err, result) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.send(JSON.stringify(result));
+                    console.log(result.result);
+                }
+                db.close();
+            });
+        }
+    });
 });
 
 // Start the server

@@ -3,7 +3,7 @@
 
 var loadSearch = require('./searchejs.js'),
     loadUpload = require('./jsonejs.js'),
-    testRender = require('./addForm.js');
+    openAddForm = require('./addForm.js');
 
 function main() {
     $('#signInForm').submit(login);
@@ -41,7 +41,7 @@ function openAddMovie(event) {
     result = new EJS({url: 'views/addForm.ejs'}).render();
     body.append(result);
 
-    testRender(); // From addForm.js
+    openAddForm(); // From addForm.js
 }
 
 function openSearch(event) {
