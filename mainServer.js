@@ -37,8 +37,6 @@ app.post('/post', function (req, res) {
 
 app.post('/create', function (req, res) {
     console.log('CREATE: ' + JSON.stringify(req.body));
-    // JSCS res.send(req.body);
-    // JSCS req.body ?? query
     var query = req.body;
 
     MongoClient.connect(url, function (err, db) {
@@ -53,6 +51,28 @@ app.post('/create', function (req, res) {
                 } else {
                     res.send(JSON.stringify(result));
                     console.log(result.result);
+                }
+                db.close();
+            });
+        }
+    });
+});
+
+app.post('/settings', function (req, res) {
+    var query = req.body,
+    formSettings = 'formSettings'; // DB collection with form settings
+
+    MongoClient.connect(url, function (err, db) {
+        var collection;
+        if (err) {
+            console.log(err);
+        } else {
+            collection = db.collection(formSettings);
+            collection.find({}, {_id: 0}).toArray(function (err, docs) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.send(JSON.stringify(docs));
                 }
                 db.close();
             });

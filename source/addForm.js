@@ -1,9 +1,9 @@
 'use strict';
 
-var testRender = require('./formMaker.js');
+var renderForm = require('./formMaker.js');
 
 function openAddForm() {
-    testRender(); // From formMaker.js
+    getSettings(); // From formMaker.js
     $('#addForm').submit(addItem);
 }
 
@@ -11,19 +11,14 @@ function addItem(event) {
     event.preventDefault();
 
     var data = new FormData(this),
-    xhr = new XMLHttpRequest(),
+    // JSCS xhr = new XMLHttpRequest(),
     url = this.action,
     method = 'POST';
     console.log('Adding Item');
-    for (var key in data) {
-        console.log('Formdata ' + key + ': ' + data[key]);
-    }
-    console.log(this.action);
 
     $.ajax({
         url: this.action,
         data: data,
-        cache: false,
         contentType: false,
         processData: false,
         method: 'POST',
@@ -32,5 +27,23 @@ function addItem(event) {
         }
     });
 }
+
+function getSettings() {
+    var url = '/settings',
+    method = 'POST',
+    formSettings = 'formSettings'; // Which settings to get
+    console.log('getting form objects');
+
+    $.ajax({
+        url: url,
+        data: formSettings,
+        method: method,
+        success: function (data) {
+            data = JSON.parse(data);
+            renderForm(data);
+        }
+    });
+}
+
 
 module.exports = openAddForm;
