@@ -1,9 +1,10 @@
+/* global EJS*/
 'use strict';
 
 var renderForm = require('./formMaker.js');
 
 function openAddForm() {
-    getSettings(); // From formMaker.js
+    renderAddForm(); // From formMaker.js
     $('#addForm').submit(addItem);
 }
 
@@ -27,12 +28,14 @@ function addItem(event) {
     });
 }
 
-function getSettings() {
+function renderAddForm() { // EJS result passed from main.js
     var url = '/settings',
     method = 'POST',
-    data = new FormData();
+    data = new FormData(),
+    $body = $('#mainBodyDiv'),
+    $ejsForm = $(new EJS({url: 'views/addForm.ejs'}).render());
 
-    data.append('settings', 'formSettings'); // Which settings to get
+    data.append('settings', 'formSettings'); // Which collection and settings to get
 
     console.log('getting form objects');
 
@@ -43,8 +46,10 @@ function getSettings() {
         contentType: false,
         processData: false,
         success: function (data) {
-            data = JSON.parse(data);
-            renderForm(data);
+            data = JSON.parse(data); // Data contains form settings from DB
+            $ejsForm.find('#inputs').html(renderForm(data));
+            $body.empty();
+            $body.append($ejsForm);
         }
     });
 }

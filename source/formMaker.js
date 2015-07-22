@@ -92,7 +92,7 @@ function renderForm(searchTypes) {
             html += '<br><br>';
         }
     }
-    $('#addInputs').html(html);
+    return html;
 }
 
 module.exports = renderForm;

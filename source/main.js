@@ -2,8 +2,8 @@
 'use strict';
 
 var loadSearch = require('./searchejs.js'),
-    loadUpload = require('./jsonejs.js'),
-    openAddForm = require('./addForm.js');
+loadUpload = require('./jsonejs.js'),
+openAddForm = require('./addForm.js');
 
 function main() {
     $('#signInForm').submit(login);
@@ -33,15 +33,9 @@ function openAddMovie(event) {
     if (event) {
         event.preventDefault();
     }
-
-    var body = $('#mainBodyDiv'),
-    result;
-
-    body.empty();
-    result = new EJS({url: 'views/addForm.ejs'}).render();
-    body.append(result);
-
-    openAddForm(); // From addForm.js
+    if ($('#addItemDiv').length === 0) {
+        openAddForm(); // From addForm.js
+    }
 }
 
 function openSearch(event) {
