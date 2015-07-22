@@ -11,7 +11,6 @@ function addItem(event) {
     event.preventDefault();
 
     var data = new FormData(this),
-    // JSCS xhr = new XMLHttpRequest(),
     url = this.action,
     method = 'POST';
     console.log('Adding Item');
@@ -31,13 +30,18 @@ function addItem(event) {
 function getSettings() {
     var url = '/settings',
     method = 'POST',
-    formSettings = 'formSettings'; // Which settings to get
+    data = new FormData();
+
+    data.append('settings', 'formSettings'); // Which settings to get
+
     console.log('getting form objects');
 
     $.ajax({
         url: url,
-        data: formSettings,
+        data: data,
         method: method,
+        contentType: false,
+        processData: false,
         success: function (data) {
             data = JSON.parse(data);
             renderForm(data);

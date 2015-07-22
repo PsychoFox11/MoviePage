@@ -1,32 +1,5 @@
 'use strict';
 
-function testRender() {
-    var searchTypes = {
-        Title: {
-            type: 'text'
-        },
-        Year: {
-            type: 'year'
-        },
-        Format: {
-            type: 'dropdown',
-            values: ['Any', 'Bluray', 'Bluray 3D', 'DVD']
-        },
-        Visuals: {
-            type: 'checkbox',
-            values: ['Color', 'Black and White', '3D']
-        },
-        Length: {
-            type: 'number',
-            values: [1]
-        },
-        Released: {
-            type: 'date'
-        }
-    };
-
-    renderForm(searchTypes);
-}
 
 function generateYears(min, max) {
     var years = [];
@@ -123,3 +96,31 @@ function renderForm(searchTypes) {
 }
 
 module.exports = renderForm;
+
+/* Useful artifact function testRender() {
+    var searchTypes = {
+        Title: {
+            type: 'text'
+        },
+        Year: {
+            type: 'year'
+        },
+        Format: {
+            type: 'dropdown',
+            values: ['Any', 'Bluray', 'Bluray 3D', 'DVD']
+        },
+        Visuals: {
+            type: 'checkbox',
+            values: ['Color', 'Black and White', '3D']
+        },
+        Length: {
+            type: 'number',
+            values: [1]
+        },
+        Released: {
+            type: 'date'
+        }
+    };
+
+    renderForm(searchTypes);
+}*/
