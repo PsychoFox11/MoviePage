@@ -3,11 +3,6 @@
 
 var renderForm = require('./formMaker.js');
 
-function openAddForm() {
-    renderAddForm(); // From formMaker.js
-    $('#addForm').submit(addItem);
-}
-
 function addItem(event) {
     event.preventDefault();
 
@@ -50,9 +45,10 @@ function renderAddForm() { // EJS result passed from main.js
             $ejsForm.find('#inputs').html(renderForm(data));
             $body.empty();
             $body.append($ejsForm);
+            $('#addForm').submit(addItem);
         }
     });
 }
 
 
-module.exports = openAddForm;
+module.exports = renderAddForm;

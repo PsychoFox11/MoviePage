@@ -3,7 +3,7 @@
 
 var loadSearch = require('./searchejs.js'),
 loadUpload = require('./jsonejs.js'),
-openAddForm = require('./addForm.js');
+renderAddForm = require('./addForm.js');
 
 function main() {
     $('#signInForm').submit(login);
@@ -34,7 +34,7 @@ function openAddMovie(event) {
         event.preventDefault();
     }
     if ($('#addItemDiv').length === 0) {
-        openAddForm(); // From addForm.js
+        renderAddForm(); // From addForm.js
     }
 }
 

@@ -7,10 +7,21 @@ app = express(),
 base = 'public',
 port = 3000,
 // Mongo stuff
-MongoClient = require('mongodb').MongoClient,
+crud = require('./serverModules/crud'),
 url = 'mongodb://localhost:27017/mainDB',
-collectionName = 'test',
+// End Mongo stuff
 server;
+
+function callback(err, result) {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log(result);
+    }
+}
+
+// Connect to DB
+crud.connect(url, callback);
 
 // Set base dir of static files
 app.use(express.static(base));
@@ -39,30 +50,32 @@ app.post('/create', function (req, res) {
     console.log('CREATE: ' + JSON.stringify(req.body));
     var query = req.body;
 
-    MongoClient.connect(url, function (err, db) {
-        var collection;
+    crud.create(query, 'test', function (err, result) {
         if (err) {
             console.log(err);
+            res.send(err);
         } else {
-            collection = db.collection(collectionName);
-            collection.insert(query, {w: 1}, function (err, result) {
-                if (err) {
-                    res.send(err);
-                } else {
-                    res.send(JSON.stringify(result));
-                    console.log(result.result);
-                }
-                db.close();
-            });
+            console.log(result.result);
+            res.send(JSON.stringify(result));
         }
+
     });
+
 });
 
 app.post('/settings', function (req, res) {
-    var query = req.body,
-    formSettings = 'formSettings'; // DB collection with form settings
+    var formSettings = 'formSettings'; // DB collection with form settings
 
-    MongoClient.connect(url, function (err, db) {
+    crud.read({}, {_id: 0}, formSettings, function (err, docs) {
+        if (err) {
+            res.send(err);
+        } else {
+            console.log(JSON.stringify(docs));
+            res.send(JSON.stringify(docs));
+        }
+    });
+
+    /*    MongoClient.connect(url, function (err, db) {
         var collection;
         if (err) {
             console.log(err);
@@ -77,7 +90,7 @@ app.post('/settings', function (req, res) {
                 db.close();
             });
         }
-    });
+    });*/
 });
 
 // Start the server
@@ -88,3 +101,4 @@ server = app.listen(port, function () {
 
     console.log('Server listening at http://%s:%s', host, port);
 });
+
