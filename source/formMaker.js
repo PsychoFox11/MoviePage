@@ -17,81 +17,81 @@ function generateYears(min, max) {
 function renderForm(searchTypes) {
     var type = '',
     html = '',
-    currentKey, i, j, text, values, htmlTemp;
+    currentKey, i, text, values, htmlTemp, name;
 
-    for (j = 0; j < searchTypes.length; j++) {
-        for (var key in searchTypes[j]) {
+    for (var key in searchTypes) {
 
-            currentKey = searchTypes[j][key];
-            type = currentKey.type;
-            values = currentKey.values ? currentKey.values : null;
-            html += '<span>';
+        currentKey = searchTypes[key];
+        name = currentKey.name;
+        type = currentKey.type;
+        values = currentKey.values ? currentKey.values : null;
+        html += '<span>';
 
-            switch (type) {
+        switch (type) {
 
-                case 'text': {
-                    html += key + ': </span><input type=\"text\" name=\"' + key + '\"></input>';
-                    break;
-                }
-
-                case 'year': {
-                    html += key + ': </span><select name=\"' + key + '\">';
-                    var years = generateYears();
-                    for (i = 0; i < years.length; i++) {
-                        html += '<option value=\"' + years[i] + '\">' + years[i] + '</option>';
-                    }
-                    html += '</select>';
-                    break;
-                }
-
-                case 'dropdown': {
-                    html += key + ': </span><select name=\"' + key + '\">';
-                    for (i = 0; i < values.length; i++) {
-                        html += '<option value=\"' + values[i] + '\">' + values[i] + '</option>';
-                    }
-                    html += '</select>';
-                    break;
-                }
-
-                case 'checkbox': {
-                    html += key + ': </span>';
-                    for (i = 0; i < values.length; i++) {
-                        html += '<input type=\"checkbox\" name=\"' + key + '\" value=\"' + values[i] + '\">' + values[i] + ' </input>';
-                    }
-                    break;
-                }
-
-                case 'number': { // Value is array with [min, max]. No value property for unlimited, single value for min, pass null for min for only max.
-                    text = '';
-                    htmlTemp = '';
-                    if (values && (values.length > 0)) {
-                        if (values.length === 2) {
-                            if (values[0] !== null) {
-                                text = ' (' + values[0] + '-' + values[1] + ')';
-                                htmlTemp += ' min=\"' + values[0] + '\" max=\"' + values[1] + '\"';
-                            } else {
-                                text = ' (Max: ' + values[1] + ')';
-                                htmlTemp += ' max=\"' + values[1] + '\"';
-                            }
-                        } else {
-                            text = ' (Min: ' + values[0] + ')';
-                            htmlTemp += ' min=\"' + values[0] + '\"';
-                        }
-                    }
-                    html += key + text + ': </span>';
-                    html += '<input type=\"number\" name=\"' + key + '\"' + htmlTemp + '></input>';
-                    break;
-                }
-
-                case 'date': {
-                    html += key + ': </span><input type=\"date\" name=\"' + key + '\"></input>';
-                    break;
-                }
+            case 'text': {
+                html += name + ': </span><input type=\"text\" name=\"' + name + '\"></input>';
+                break;
             }
 
-            html += '<br><br>';
+            case 'year': {
+                html += name + ': </span><select name=\"' + name + '\">';
+                var years = generateYears();
+                for (i = 0; i < years.length; i++) {
+                    html += '<option value=\"' + years[i] + '\">' + years[i] + '</option>';
+                }
+                html += '</select>';
+                break;
+            }
+
+            case 'dropdown': {
+                html += name + ': </span><select name=\"' + name + '\">';
+                for (i = 0; i < values.length; i++) {
+                    html += '<option value=\"' + values[i] + '\">' + values[i] + '</option>';
+                }
+                html += '</select>';
+                break;
+            }
+
+            case 'checkbox': {
+                html += name + ': </span>';
+                for (i = 0; i < values.length; i++) {
+                    html += '<input type=\"checkbox\" name=\"' + name + '\" value=\"' + values[i] + '\">' + values[i] + ' </input>';
+                }
+                break;
+            }
+
+            case 'number': { // Value is array with [min, max]. No value property for unlimited, single value for min, pass null for min for only max.
+                text = '';
+                htmlTemp = '';
+                if (values && (values.length > 0)) {
+                    if (values.length === 2) {
+                        if (values[0] !== null) {
+                            text = ' (' + values[0] + '-' + values[1] + ')';
+                            htmlTemp += ' min=\"' + values[0] + '\" max=\"' + values[1] + '\"';
+                        } else {
+                            text = ' (Max: ' + values[1] + ')';
+                            htmlTemp += ' max=\"' + values[1] + '\"';
+                        }
+                    } else {
+                        text = ' (Min: ' + values[0] + ')';
+                        htmlTemp += ' min=\"' + values[0] + '\"';
+                    }
+                }
+                html += name + text + ': </span>';
+                html += '<input type=\"number\" name=\"' + name + '\"' + htmlTemp + '></input>';
+                break;
+            }
+
+            case 'date': {
+                html += name + ': </span><input type=\"date\" name=\"' + name + '\"></input>';
+                break;
+            }
         }
+
+        html += '<br><br>';
     }
+
     return html;
 }
 
