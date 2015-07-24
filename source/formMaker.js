@@ -17,14 +17,31 @@ function generateYears(min, max) {
 function renderForm(searchTypes) {
     var type = '',
     html = '',
-    currentKey, i, text, values, htmlTemp, name;
+    currentKey, i, j, text, values, htmlTemp, name;
 
-    for (var key in searchTypes) {
+    searchTypes.sort(function (a, b) {
+        if (typeof a.order !== 'number') {
+            return -1;
+        } else if (typeof b.order !== 'number') {
+            return 0;
+        } else {
+            return a.order - b.order;
+        }
+    });
 
-        currentKey = searchTypes[key];
+    // Generate html for form inputs
+    for (j = 0; j < searchTypes.length; j++) {
+
+        if (!searchTypes[j].name || !searchTypes[j].type) { // Must have name and type
+            continue;
+        } else if (typeof searchTypes[j].order !== 'number') { // If no valid order, end of relavent list since sort puts those at the end
+            break;
+        }
+
+        currentKey = searchTypes[j];
         name = currentKey.name;
         type = currentKey.type;
-        values = currentKey.values ? currentKey.values : null;
+        values = currentKey.values ? currentKey.values : null; // Values must always be an array, even if only one element
         html += '<span>';
 
         switch (type) {
@@ -96,31 +113,3 @@ function renderForm(searchTypes) {
 }
 
 module.exports = renderForm;
-
-/* Useful artifact function testRender() {
-    var searchTypes = {
-        Title: {
-            type: 'text'
-        },
-        Year: {
-            type: 'year'
-        },
-        Format: {
-            type: 'dropdown',
-            values: ['Any', 'Bluray', 'Bluray 3D', 'DVD']
-        },
-        Visuals: {
-            type: 'checkbox',
-            values: ['Color', 'Black and White', '3D']
-        },
-        Length: {
-            type: 'number',
-            values: [1]
-        },
-        Released: {
-            type: 'date'
-        }
-    };
-
-    renderForm(searchTypes);
-}*/
