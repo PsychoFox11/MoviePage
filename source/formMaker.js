@@ -14,7 +14,7 @@ function generateYears(min, max) {
     return years; // Returns from greatest to smallest
 }
 
-function renderForm(searchTypes) {
+function renderForm(searchTypes, mode) { // Mode should be 'simple' or 'advanced', pass nothing for all
     var type = '',
     html = '',
     currentKey, i, j, text, values, htmlTemp, name;
@@ -29,16 +29,24 @@ function renderForm(searchTypes) {
         }
     });
 
+
     // Generate html for form inputs
     for (j = 0; j < searchTypes.length; j++) {
+        currentKey = searchTypes[j];
 
-        if (!searchTypes[j].name || !searchTypes[j].type) { // Must have name and type
+        if (!currentKey.name || !currentKey.type) { // Must have name and type
             continue;
-        } else if (typeof searchTypes[j].order !== 'number') { // If no valid order, end of relavent list since sort puts those at the end
+        } else if (typeof currentKey.order !== 'number') { // If no valid order, end of relavent list since sort puts those at the end
             break;
         }
 
-        currentKey = searchTypes[j];
+        if ((mode === 'simple') && (currentKey.advanced)) {
+            break;
+        } else if ((mode === 'advanced') && (!currentKey.advanced)) {
+            continue;
+        }
+
+
         name = currentKey.name;
         type = currentKey.type;
         values = currentKey.values ? currentKey.values : null; // Values must always be an array, even if only one element

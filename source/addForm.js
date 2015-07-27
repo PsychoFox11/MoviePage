@@ -23,7 +23,7 @@ function addItem(event) {
     });
 }
 
-function renderAddForm() { // EJS result passed from main.js
+function renderAddForm() {
     var url = '/settings',
     method = 'POST',
     data = new FormData(),

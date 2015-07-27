@@ -1,7 +1,7 @@
 /* global jon, EJS*/
 'use strict';
 
-var loadSearch = require('./searchejs.js'),
+var renderSearchForm = require('./search.js'),
 loadUpload = require('./jsonejs.js'),
 renderAddForm = require('./addForm.js');
 
@@ -42,16 +42,10 @@ function openSearch(event) {
     if (event) {
         event.preventDefault();
     }
-    var $body = $('#mainBodyDiv'),
-    result;
 
-    if ($('#searchDiv').length !== 0) {
-        return;
+    if ($('#searchDiv').length === 0) {
+        renderSearchForm(); // From search.js
     }
-    $body.empty(); // Clear 'body' div
-    result = new EJS({url: 'views/search.ejs'}).render();
-    $body.append(result);
-    loadSearch(); // From searchejs.js
 }
 
 function openUploader(event) {
