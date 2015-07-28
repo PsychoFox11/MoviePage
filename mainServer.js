@@ -29,23 +29,17 @@ app.use(express.static(base));
 // Multer parses multiform data, then we set upload dir
 app.use(multer({dest: './uploads/'}));
 
-app.post('/upload', function (req, res) {
-    for (var key in req.body) {
-        console.log(req.body[key]);
-    }
-
-    res.send(req.body);
-});
-
+// Temporary - echos string
 app.post('/post', function (req, res) {
     var returnString = '';
-    console.log(req.body);
+    // JSCS console.log(req.body);
     for (var key in req.body) {
         returnString += key + ' : ' + req.body[key] + '<br>';
     }
     res.send(returnString);
 });
 
+// Add item to DB
 app.post('/create', function (req, res) {
     console.log('CREATE: ' + JSON.stringify(req.body));
     var query = req.body;
@@ -55,7 +49,7 @@ app.post('/create', function (req, res) {
             console.log(err);
             res.send(err);
         } else {
-            console.log(result.result);
+            // JSCS console.log(result.result);
             res.send(JSON.stringify(result));
         }
 
@@ -63,6 +57,7 @@ app.post('/create', function (req, res) {
 
 });
 
+// Fetch form maker settings
 app.post('/settings', function (req, res) {
     var formSettings = 'formSettings'; // DB collection with form settings
 
@@ -70,27 +65,33 @@ app.post('/settings', function (req, res) {
         if (err) {
             res.send(err);
         } else {
-            console.log(JSON.stringify(docs));
+            // JSCS console.log(JSON.stringify(docs));
             res.send(JSON.stringify(docs));
         }
     });
+});
 
-    /*    MongoClient.connect(url, function (err, db) {
-        var collection;
-        if (err) {
-            console.log(err);
-        } else {
-            collection = db.collection(formSettings);
-            collection.find({}, {_id: 0}).toArray(function (err, docs) {
-                if (err) {
-                    res.send(err);
-                } else {
-                    res.send(JSON.stringify(docs));
-                }
-                db.close();
-            });
+// Search
+app.post('/search', function (req, res) {
+    var searchColl = 'test', // DB collection to search
+    query = req.body;
+
+    for (var key in query) {
+        if (query[key] instanceof Array) {
+            query[key] = {$in: query[key]};
         }
-    });*/
+    }
+
+    console.log('query: ' + JSON.stringify(query));
+
+    crud.read(query, {_id: 0}, searchColl, function (err, docs) {
+        if (err) {
+            res.send(err);
+        } else {
+            // JSCS res.send('blahhhhh');
+            res.send(JSON.stringify(docs));
+        }
+    });
 });
 
 // Start the server

@@ -60,6 +60,7 @@ function submitForm(event) {
         method: 'POST',
         success: function (data) {
             $('#outputDiv').html(data);
+            console.log(data);
         }
     });
 }
