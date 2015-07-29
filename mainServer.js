@@ -41,7 +41,7 @@ app.post('/post', function (req, res) {
 
 // Add item to DB
 app.post('/create', function (req, res) {
-    console.log('CREATE: ' + JSON.stringify(req.body));
+    // JSCS console.log('CREATE: ' + JSON.stringify(req.body));
     var query = req.body;
 
     crud.create(query, 'test', function (err, result) {
@@ -77,8 +77,11 @@ app.post('/search', function (req, res) {
     query = req.body;
 
     for (var key in query) {
+        console.log('key: ' + query[key] + ' type: ' + typeof query[key]);
         if (query[key] instanceof Array) {
             query[key] = {$in: query[key]};
+        } else if (typeof query[key] === 'string') {
+            query[key] = new RegExp('^' + query[key] + '$', 'i');
         }
     }
 
