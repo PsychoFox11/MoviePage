@@ -44,6 +44,12 @@ function fixQuery(query) { // Corrects datatypes since formData object sends eve
         currentType = dataTypes[key];
 
         switch (currentType) {
+
+            case 'string': {
+                query[key] = new RegExp('^' + query[key] + '$', 'i');
+                break;
+            }
+
             case 'int': {
                 value = parseInt(query[key]);
                 query[key] = isNaN(value) ? null : value;
@@ -53,6 +59,13 @@ function fixQuery(query) { // Corrects datatypes since formData object sends eve
             case 'float': {
                 value = parseFloat(query[key]);
                 query[key] = isNaN(value) ? null : value;
+                break;
+            }
+
+            case 'array': {
+                if (query[key] instanceof Array) {
+                    query[key] = {$in: query[key]};
+                }
                 break;
             }
         }
@@ -123,11 +136,6 @@ app.post('/search', function (req, res) {
 
     for (var key in query) {
         console.log('key: ' + query[key] + ' type: ' + typeof query[key]);
-        if (query[key] instanceof Array) {
-            query[key] = {$in: query[key]};
-        } else if (dataTypes[key] === 'string') {
-            query[key] = new RegExp('^' + query[key] + '$', 'i');
-        }
     }
 
     console.log('query: ' + JSON.stringify(query));
