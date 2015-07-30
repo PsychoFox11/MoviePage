@@ -10,7 +10,7 @@ port = 3000,
 crud = require('./serverModules/crud'),
 url = 'mongodb://localhost:27017/mainDB',
 // End Mongo stuff
-server;
+server, formSettings;
 
 function callback(err, result) {
     if (err) {
@@ -20,8 +20,26 @@ function callback(err, result) {
     }
 }
 
-// Connect to DB
-crud.connect(url, callback);
+function setFormSettings() {
+    crud.read({}, {_id: 0}, 'formSettings', function (err, docs) {
+        if (err) {
+            console.log(err);
+        } else {
+            formSettings = docs;
+            return formSettings;
+        }
+    });
+}
+
+// Connect to DB and get for settings
+crud.connect(url, function (err, result) {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log(result);
+        setFormSettings();
+    }
+});
 
 // Set base dir of static files
 app.use(express.static(base));
@@ -59,16 +77,11 @@ app.post('/create', function (req, res) {
 
 // Fetch form maker settings
 app.post('/settings', function (req, res) {
-    var formSettings = 'formSettings'; // DB collection with form settings
-
-    crud.read({}, {_id: 0}, formSettings, function (err, docs) {
-        if (err) {
-            res.send(err);
-        } else {
-            // JSCS console.log(JSON.stringify(docs));
-            res.send(JSON.stringify(docs));
-        }
-    });
+    if (formSettings) {
+        res.send(JSON.stringify(formSettings));
+    } else {
+        console.log('no form settings object');
+    }
 });
 
 // Search
