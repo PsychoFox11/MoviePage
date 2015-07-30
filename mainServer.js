@@ -10,7 +10,7 @@ port = 3000,
 crud = require('./serverModules/crud'),
 url = 'mongodb://localhost:27017/mainDB',
 // End Mongo stuff
-server, formSettings;
+server, formSettings, dataTypes;
 
 function callback(err, result) {
     if (err) {
@@ -20,18 +20,46 @@ function callback(err, result) {
     }
 }
 
+// Store formSettings and create dataTypes object based on it
 function setFormSettings() {
     crud.read({}, {_id: 0}, 'formSettings', function (err, docs) {
         if (err) {
             console.log(err);
         } else {
             formSettings = docs;
-            return formSettings;
+            dataTypes = {};
+            for (var key in formSettings) {
+                dataTypes[formSettings[key].name] = formSettings[key].dataType;
+            }
+            console.log('datatypes');
+            console.log(JSON.stringify(dataTypes));
         }
     });
 }
 
-// Connect to DB and get for settings
+function fixQuery(query) { // Corrects datatypes since formData object sends everything as strings
+    var currentType, value;
+
+    for (var key in query) {
+        currentType = dataTypes[key];
+
+        switch (currentType) {
+            case 'int': {
+                value = parseInt(query[key]);
+                query[key] = isNaN(value) ? null : value;
+                break;
+            }
+
+            case 'float': {
+                value = parseFloat(query[key]);
+                query[key] = isNaN(value) ? null : value;
+                break;
+            }
+        }
+    }
+}
+
+// Connect to DB and get form settings
 crud.connect(url, function (err, result) {
     if (err) {
         console.log(err);
@@ -62,6 +90,8 @@ app.post('/create', function (req, res) {
     // JSCS console.log('CREATE: ' + JSON.stringify(req.body));
     var query = req.body;
 
+    fixQuery(query);
+
     crud.create(query, 'test', function (err, result) {
         if (err) {
             console.log(err);
@@ -89,11 +119,13 @@ app.post('/search', function (req, res) {
     var searchColl = 'test', // DB collection to search
     query = req.body;
 
+    fixQuery(query);
+
     for (var key in query) {
         console.log('key: ' + query[key] + ' type: ' + typeof query[key]);
         if (query[key] instanceof Array) {
             query[key] = {$in: query[key]};
-        } else if (typeof query[key] === 'string') {
+        } else if (dataTypes[key] === 'string') {
             query[key] = new RegExp('^' + query[key] + '$', 'i');
         }
     }
