@@ -1,15 +1,15 @@
 /* global EJS*/
 'use strict';
 
-var getFormSettings = require('./getFormSettings.js'),
+var getFormSettingsThen = require('./getFormSettings.js'),
 renderForm = require('./formMaker.js');
 
 function renderSearchForm() {
-    var prom = getFormSettings(),
+    var prom = getFormSettingsThen(),
     $body = $('#mainBodyDiv'),
     $ejsForm = $(new EJS({url: 'views/search.ejs'}).render());
 
-    getFormSettings(function (result) { // Result is parsed formSettings, returns Promise
+    getFormSettingsThen(function (result) { // Result is parsed formSettings, returns Promise
         var data = result;
         // JSCS data = JSON.parse(data); // Data contains form settings from DB
         $ejsForm.find('#inputs').html(renderForm(data, 'simple'));

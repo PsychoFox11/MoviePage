@@ -2,7 +2,7 @@
 
 var Promise = require('promise');
 
-function getFormSettings(callback) {
+function getFormSettingsThen(callback) {
     return new Promise(function (resolve, reject) {
         var url = '/settings',
         method = 'POST',
@@ -31,4 +31,4 @@ function getFormSettings(callback) {
     });
 }
 
-module.exports = getFormSettings;
+module.exports = getFormSettingsThen;
