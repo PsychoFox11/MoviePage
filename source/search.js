@@ -1,34 +1,25 @@
 /* global EJS*/
 'use strict';
 
-var renderForm = require('./formMaker.js');
+var getFormSettingsPromise = require('./getFormSettings.js'),
+renderForm = require('./formMaker.js');
 
-function renderSearchForm(event) {
-    var url = '/settings',
-    method = 'POST',
-    data = new FormData(),
+function renderSearchForm() {
+    var prom = getFormSettingsPromise(),
     $body = $('#mainBodyDiv'),
     $ejsForm = $(new EJS({url: 'views/search.ejs'}).render());
 
-    data.append('settings', 'formSettings'); // Which collection and settings to get
-
-    console.log('getting form objects');
-
-    $.ajax({
-        url: url,
-        data: data,
-        method: method,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-            data = JSON.parse(data); // Data contains form settings from DB
-            $ejsForm.find('#inputs').html(renderForm(data, 'simple'));
-            $ejsForm.find('#advInputs').html(renderForm(data, 'advanced'));
-            $body.empty();
-            $body.append($ejsForm);
-            $('#searchForm').submit(submitForm);
-            $('.advancedLink').click(changeMode);
-        }
+    prom.then(function (result) { // Result is parsed formSettings
+        var data = result;
+        // JSCS data = JSON.parse(data); // Data contains form settings from DB
+        $ejsForm.find('#inputs').html(renderForm(data, 'simple'));
+        $ejsForm.find('#advInputs').html(renderForm(data, 'advanced'));
+        $body.empty();
+        $body.append($ejsForm);
+        $('#searchForm').submit(submitForm);
+        $('.advancedLink').click(changeMode);
+    }, function (err) {
+        console.log(err);
     });
 }
 
@@ -47,7 +38,9 @@ function submitForm(event) {
     var data = new FormData(this),
     xhr = new XMLHttpRequest(),
     url = this.action,
-    method = 'POST';
+    method = 'POST',
+    searchResults;
+
     console.log('blah');
     console.log(this.action);
 
@@ -59,6 +52,8 @@ function submitForm(event) {
         processData: false,
         method: 'POST',
         success: function (data) {
+            // JSCS result = new EJS({url: 'views/searchResults.ejs'}).render({results: results});
+
             $('#outputDiv').html(data);
             console.log(data);
         }
@@ -66,3 +61,6 @@ function submitForm(event) {
 }
 
 module.exports = renderSearchForm;
+
+
+
