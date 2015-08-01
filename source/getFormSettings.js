@@ -2,7 +2,7 @@
 
 var Promise = require('promise');
 
-function getFormSettingsPromise() {
+function getFormSettings(callback) {
     return new Promise(function (resolve, reject) {
         var url = '/settings',
         method = 'POST',
@@ -25,7 +25,10 @@ function getFormSettingsPromise() {
                 reject('Ajax error fetching form settings');
             }
         });
+    })
+    .then(callback, function (err) {
+        console.log(err);
     });
 }
 
-module.exports = getFormSettingsPromise;
+module.exports = getFormSettings;

@@ -1,15 +1,15 @@
 /* global EJS*/
 'use strict';
 
-var getFormSettingsPromise = require('./getFormSettings.js'),
+var getFormSettings = require('./getFormSettings.js'),
 renderForm = require('./formMaker.js');
 
 function renderSearchForm() {
-    var prom = getFormSettingsPromise(),
+    var prom = getFormSettings(),
     $body = $('#mainBodyDiv'),
     $ejsForm = $(new EJS({url: 'views/search.ejs'}).render());
 
-    prom.then(function (result) { // Result is parsed formSettings
+    getFormSettings(function (result) { // Result is parsed formSettings, returns Promise
         var data = result;
         // JSCS data = JSON.parse(data); // Data contains form settings from DB
         $ejsForm.find('#inputs').html(renderForm(data, 'simple'));
@@ -18,8 +18,6 @@ function renderSearchForm() {
         $body.append($ejsForm);
         $('#searchForm').submit(submitForm);
         $('.advancedLink').click(changeMode);
-    }, function (err) {
-        console.log(err);
     });
 }
 
