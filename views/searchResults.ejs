@@ -1,0 +1,31 @@
+<table id="searchResults">
+    <thead>
+        <tr class="headerRow">
+            <% for (var i = 0; i < formSettings.length; i++) { %>
+                <th><%= formSettings[i].name %></th>
+            <% } %>
+        </tr>
+    </thead>
+    <tbody>
+        <% for (i = 0; i < searchResults.length; i++) { %>
+            <tr>
+            <% for (var j = 0; j < formSettings.length; j++) { %>
+                <% var currentValue = searchResults[i][formSettings[j].name] %>
+                <% if (currentValue instanceof Array) { %>
+                    <td>
+                    <% for (var k = 0; k < currentValue.length; k++) {
+                        if (k + 1 === currentValue.length) { %>
+                            <%= currentValue[k] %>
+                        <% } else { %>   
+                            <%= currentValue[k] %>,&nbsp;
+                        <% } %>
+                    <% } %>
+                    </td>
+                <% } else { %>
+                    <td><%= currentValue %></td>
+                <% } %>
+            <% } %>
+            </tr>
+        <% } %>
+    </tbody>
+</table>

@@ -37,7 +37,8 @@ function submitForm(event) {
     xhr = new XMLHttpRequest(),
     url = this.action,
     method = 'POST',
-    searchResults;
+    $output = $('#outputDiv'),
+    ejsResult, searchResults;
 
     console.log('blah');
     console.log(this.action);
@@ -50,10 +51,26 @@ function submitForm(event) {
         processData: false,
         method: 'POST',
         success: function (data) {
-            // JSCS result = new EJS({url: 'views/searchResults.ejs'}).render({results: results});
+            getFormSettingsThen(function (formSettings) {
+                sortSearchTypes(formSettings);
+                searchResults = JSON.parse(data);
+                ejsResult = new EJS({url: 'views/searchResults.ejs'}).render({formSettings: formSettings, searchResults: searchResults});
+                $output.empty();
+                $output.append(ejsResult);
+            });
+        }
+    });
+}
 
-            $('#outputDiv').html(data);
-            console.log(data);
+function sortSearchTypes(searchTypes) {
+    console.log('sorting');
+    searchTypes.sort(function (a, b) {
+        if (typeof a.order !== 'number') {
+            return -1;
+        } else if (typeof b.order !== 'number') {
+            return 0;
+        } else {
+            return a.order - b.order;
         }
     });
 }
