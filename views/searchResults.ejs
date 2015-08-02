@@ -1,8 +1,13 @@
+<% for (var i = 0; i < formSettings.length; i++) { %>
+    <input type="checkbox" name="<%= formSettings[i].name %>" value="<%= formSettings[i].name %>" class="gridCheckbox" checked><%= formSettings[i].name %></input>
+<% } %>
+
+
 <table id="searchResults">
     <thead>
         <tr class="headerRow">
-            <% for (var i = 0; i < formSettings.length; i++) { %>
-                <th><%= formSettings[i].name %></th>
+            <% for (i = 0; i < formSettings.length; i++) { %>
+                <th data-type="<%= formSettings[i].name %>"><%= formSettings[i].name %></th>
             <% } %>
         </tr>
     </thead>
@@ -12,7 +17,7 @@
             <% for (var j = 0; j < formSettings.length; j++) { %>
                 <% var currentValue = searchResults[i][formSettings[j].name] %>
                 <% if (currentValue instanceof Array) { %>
-                    <td>
+                    <td data-type="<%= formSettings[j].name%>">
                     <% for (var k = 0; k < currentValue.length; k++) {
                         if (k + 1 === currentValue.length) { %>
                             <%= currentValue[k] %>
@@ -22,7 +27,7 @@
                     <% } %>
                     </td>
                 <% } else { %>
-                    <td><%= currentValue %></td>
+                    <td data-type="<%= formSettings[j].name%>"><%= currentValue %></td>
                 <% } %>
             <% } %>
             </tr>

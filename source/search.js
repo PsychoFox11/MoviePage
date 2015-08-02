@@ -57,6 +57,7 @@ function submitForm(event) {
                 ejsResult = new EJS({url: 'views/searchResults.ejs'}).render({formSettings: formSettings, searchResults: searchResults});
                 $output.empty();
                 $output.append(ejsResult);
+                addCheckboxListeners();
             });
         }
     });
@@ -71,6 +72,16 @@ function sortSearchTypes(searchTypes) {
             return 0;
         } else {
             return a.order - b.order;
+        }
+    });
+}
+
+function addCheckboxListeners() {
+    $('.gridCheckbox').change(function (event) {
+        if (!this.checked) {
+            $('[data-type=\'' + this.value + '\']').addClass('hidden');
+        } else {
+            $('[data-type=\'' + this.value + '\']').removeClass('hidden');
         }
     });
 }
