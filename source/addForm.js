@@ -32,12 +32,11 @@ function addItem(event) {
                 if ($('#addResults').length === 0) {
 
                     $ejsResult = $(new EJS({url: 'views/addResults.ejs'}).render({formSettings: formSettings})); // Generate the table if it isn't there yet
-                    $ejsResult.find('#addResultBody').append(ejsRows);
+                    $ejsResult.find('#addResultBody').append(ejsRows); // Add rows to table before displaying
                     $outputDiv.empty();
                     $outputDiv.append($ejsResult);
-                    $outputDiv.append('blahhhhh');
                 } else {
-                    $('#addResultBody').append(ejsRows);
+                    $('#addResultBody').append(ejsRows); // If table is already there, just add rows
                 }
 
             });

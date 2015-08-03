@@ -62,6 +62,7 @@ function submitForm(event) {
     });
 }
 
+// Find all with gridCheckBox class and add a listener to it. Checkboxes get names in EJS from formsettings so it will match.
 function addCheckboxListeners() {
     $('.gridCheckbox').change(function (event) {
         if (!this.checked) {

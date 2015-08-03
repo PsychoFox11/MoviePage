@@ -6,6 +6,7 @@ loadUpload = require('./jsonejs.js'),
 renderAddForm = require('./addForm.js');
 
 function main() {
+    openSignUp();
     $('#signInForm').submit(login);
     fetchSidebar();
     $('#searchClick').click(openSearch);
@@ -61,5 +62,19 @@ function openUploader(event) {
     $body.append(result);
     loadUpload(); // From jsonejs.js
 }
+
+function openSignUp(event) {
+    var $body = $('#mainBodyDiv'),
+    result;
+
+    if (event) {
+        event.preventDefault();
+    }
+    $body.empty();
+    result = new EJS({url: 'views/login.ejs'}).render();
+    $body.append(result);
+}
+
+
 
 $(main);
