@@ -78,7 +78,6 @@ app.use(multer({dest: './uploads/'}));
 // Temporary - echos string
 app.post('/post', function (req, res) {
     var returnString = '';
-    // JSCS console.log(req.body);
     for (var key in req.body) {
         returnString += key + ' : ' + req.body[key] + '<br>';
     }
@@ -98,7 +97,7 @@ app.post('/create', function (req, res) {
             console.log(err);
             res.send(err);
         } else {
-            // JSCS console.log(result.result);
+            // Removing _id since Mongo adds it to req.body, but we don't need it on the client side
             delete req.body._id;
             res.send(JSON.stringify(req.body));
         }
