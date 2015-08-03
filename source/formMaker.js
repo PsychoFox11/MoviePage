@@ -19,17 +19,6 @@ function renderForm(searchTypes, mode) { // Mode should be 'simple' or 'advanced
     html = '',
     currentKey, i, j, text, values, htmlTemp, name;
 
-    searchTypes.sort(function (a, b) {
-        if (typeof a.order !== 'number') {
-            return -1;
-        } else if (typeof b.order !== 'number') {
-            return 0;
-        } else {
-            return a.order - b.order;
-        }
-    });
-
-
     // Generate html for form inputs
     for (j = 0; j < searchTypes.length; j++) {
         currentKey = searchTypes[j];

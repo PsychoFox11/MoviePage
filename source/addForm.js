@@ -1,7 +1,8 @@
 /* global EJS*/
 'use strict';
 
-var renderForm = require('./formMaker.js');
+var renderForm = require('./formMaker.js'),
+getFormSettingsThen = require('./getFormSettings.js');
 
 function addItem(event) {
     event.preventDefault();
@@ -11,6 +12,9 @@ function addItem(event) {
     method = 'POST';
     console.log('Adding Item');
 
+    console.log(document.getElementsByName('Format').length);
+    console.log(this.Title.value);
+
     $.ajax({
         url: this.action,
         data: data,
@@ -18,37 +22,41 @@ function addItem(event) {
         processData: false,
         method: 'POST',
         success: function (data) {
-            $('#outputDiv').html(data);
+            getFormSettingsThen(function (formSettings) { // Get formsettings then proceed
+                var $outputDiv = $('#outputDiv'),
+                addResult, $ejsResult, ejsRows;
+
+                addResult = JSON.parse(data);
+                ejsRows = new EJS({url: 'views/addResultsRow.ejs'}).render({formSettings: formSettings, addResult: addResult}); // Generate the rows
+
+                if ($('#addResults').length === 0) {
+
+                    $ejsResult = $(new EJS({url: 'views/addResults.ejs'}).render({formSettings: formSettings})); // Generate the table if it isn't there yet
+                    $ejsResult.find('#addResultBody').append(ejsRows);
+                    $outputDiv.empty();
+                    $outputDiv.append($ejsResult);
+                    $outputDiv.append('blahhhhh');
+                } else {
+                    $('#addResultBody').append(ejsRows);
+                }
+
+            });
         }
     });
 }
 
 function renderAddForm() {
-    var url = '/settings',
-    method = 'POST',
-    data = new FormData(),
-    $body = $('#mainBodyDiv'),
-    $ejsForm = $(new EJS({url: 'views/addForm.ejs'}).render());
+    var $body = $('#mainBodyDiv'),
+    $ejsForm = $(new EJS({url: 'views/addForm.ejs'}).render()),
+    data;
 
-    data.append('settings', 'formSettings'); // Which collection and settings to get
-
-    console.log('getting form objects');
-
-    $.ajax({
-        url: url,
-        data: data,
-        method: method,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-            data = JSON.parse(data); // Data contains form settings from DB
-            $ejsForm.find('#inputs').html(renderForm(data));
-            $body.empty();
-            $body.append($ejsForm);
-            $('#addForm').submit(addItem);
-        }
+    getFormSettingsThen(function (result) {
+        data = result; // Data contains form settings from DB
+        $ejsForm.find('#inputs').html(renderForm(data));
+        $body.empty();
+        $body.append($ejsForm);
+        $('#addForm').submit(addItem);
     });
 }
-
 
 module.exports = renderAddForm;

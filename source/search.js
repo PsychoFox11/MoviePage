@@ -52,26 +52,12 @@ function submitForm(event) {
         method: 'POST',
         success: function (data) {
             getFormSettingsThen(function (formSettings) {
-                sortSearchTypes(formSettings);
                 searchResults = JSON.parse(data);
                 ejsResult = new EJS({url: 'views/searchResults.ejs'}).render({formSettings: formSettings, searchResults: searchResults});
                 $output.empty();
                 $output.append(ejsResult);
                 addCheckboxListeners();
             });
-        }
-    });
-}
-
-function sortSearchTypes(searchTypes) {
-    console.log('sorting');
-    searchTypes.sort(function (a, b) {
-        if (typeof a.order !== 'number') {
-            return -1;
-        } else if (typeof b.order !== 'number') {
-            return 0;
-        } else {
-            return a.order - b.order;
         }
     });
 }

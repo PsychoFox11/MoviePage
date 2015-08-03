@@ -1,0 +1,20 @@
+<% for (var i in addResult) { %>
+    <tr>
+    <% for (var j = 0; j < formSettings.length; j++) { %>
+        <% var currentValue = addResult[formSettings[j].name] %>
+        <% if (currentValue instanceof Array) { %>
+            <td data-type="<%= formSettings[j].name %>">
+            <% for (var k = 0; k < currentValue.length; k++) {
+                if (k + 1 === currentValue.length) { %>
+                    <%= currentValue[k] %>
+                <% } else { %>   
+                    <%= currentValue[k] %>,&nbsp;
+                <% } %>
+            <% } %>
+            </td>
+        <% } else { %>
+            <td data-type="<%= formSettings[j].name%>"><%= currentValue %></td>
+        <% } %>
+    <% } %>
+    </tr>
+<% } %>

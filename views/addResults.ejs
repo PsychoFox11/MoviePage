@@ -1,0 +1,12 @@
+<table id="addResults">
+    <thead>
+        <tr class="headerRow">
+            <% for (var i = 0; i < formSettings.length; i++) { %>
+                <th data-type="<%= formSettings[i].name %>"><%= formSettings[i].name %></th>
+            <% } %>
+        </tr>
+    </thead>
+    <tbody id="addResultBody">
+
+    </tbody>
+</table>

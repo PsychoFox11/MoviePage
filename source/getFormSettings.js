@@ -19,7 +19,9 @@ function getFormSettingsThen(callback) {
             contentType: false,
             processData: false,
             success: function (data) {
-                resolve(JSON.parse(data)); // Data contains form settings from DB
+                data = JSON.parse(data);
+                sortSearchTypes(data);
+                resolve(data); // Data contains form settings from DB
             },
             error: function () {
                 reject('Ajax error fetching form settings');
@@ -30,5 +32,19 @@ function getFormSettingsThen(callback) {
         console.log(err);
     });
 }
+
+function sortSearchTypes(searchTypes) { // Move this somewhere, appears in addform.ejs, formaker.js, search.js
+    console.log('sorting');
+    searchTypes.sort(function (a, b) {
+        if (typeof a.order !== 'number') {
+            return -1;
+        } else if (typeof b.order !== 'number') {
+            return 0;
+        } else {
+            return a.order - b.order;
+        }
+    });
+}
+
 
 module.exports = getFormSettingsThen;

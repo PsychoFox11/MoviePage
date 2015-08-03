@@ -88,7 +88,8 @@ app.post('/post', function (req, res) {
 // Add item to DB
 app.post('/create', function (req, res) {
     // JSCS console.log('CREATE: ' + JSON.stringify(req.body));
-    var query = req.body;
+    var query = req.body,
+    returnResult;
 
     fixQuery(query);
 
@@ -98,7 +99,8 @@ app.post('/create', function (req, res) {
             res.send(err);
         } else {
             // JSCS console.log(result.result);
-            res.send(JSON.stringify(result));
+            delete req.body._id;
+            res.send(JSON.stringify(req.body));
         }
 
     });
