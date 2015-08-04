@@ -1,4 +1,4 @@
-<% for (var i = 0; i < formSettings.length; i++) { %>
+<% for (var i = 1; i < formSettings.length; i++) { // Start with 1 since name should always be there %>
     <input type="checkbox" name="<%= formSettings[i].name %>" value="<%= formSettings[i].name %>" class="gridCheckbox" checked><%= formSettings[i].name %></input>
 <% } %>
 
@@ -16,18 +16,22 @@
             <tr>
             <% for (var j = 0; j < formSettings.length; j++) { %>
                 <% var currentValue = searchResults[i][formSettings[j].name] %>
-                <% if (currentValue instanceof Array) { %>
-                    <td data-type="<%= formSettings[j].name%>">
-                    <% for (var k = 0; k < currentValue.length; k++) {
-                        if (k + 1 === currentValue.length) { %>
-                            <%= currentValue[k] %>
-                        <% } else { %>   
-                            <%= currentValue[k] %>,&nbsp;
-                        <% } %>
-                    <% } %>
-                    </td>
+                <% if (j === 0) { %>
+                    <td data-type="<%= formSettings[j].name %>"><a class="itemLink" data-id="<%= searchResults[i]._id %>" href="#"><%= currentValue %></a></td>
                 <% } else { %>
-                    <td data-type="<%= formSettings[j].name%>"><%= currentValue %></td>
+                    <% if (currentValue instanceof Array) { %>
+                        <td data-type="<%= formSettings[j].name %>">
+                        <% for (var k = 0; k < currentValue.length; k++) {
+                            if (k + 1 === currentValue.length) { %>
+                                <%= currentValue[k] %>
+                            <% } else { %>
+                                <%= currentValue[k] %>,&nbsp;
+                            <% } %>
+                        <% } %>
+                        </td>
+                    <% } else { %>
+                        <td data-type="<%= formSettings[j].name%>"><%= currentValue %></td>
+                    <% } %>
                 <% } %>
             <% } %>
             </tr>

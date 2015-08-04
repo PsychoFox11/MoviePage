@@ -133,7 +133,7 @@ app.post('/search', function (req, res) {
 
     console.log('query: ' + JSON.stringify(query));
 
-    crud.read(query, {_id: 0}, searchColl, function (err, docs) {
+    crud.read(query, {}, searchColl, function (err, docs) {
         if (err) {
             res.send(err);
         } else {

@@ -51,6 +51,8 @@ function submitForm(event) {
         method: 'POST',
         success: function (data) {
             getFormSettingsThen(function (formSettings) {
+                console.log('results');
+                console.log(data);
                 searchResults = JSON.parse(data);
                 ejsResult = new EJS({url: 'views/searchResults.ejs'}).render({formSettings: formSettings, searchResults: searchResults});
                 $output.empty();
