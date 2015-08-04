@@ -5,8 +5,7 @@ var getFormSettingsThen = require('./getFormSettings.js'),
 renderForm = require('./formMaker.js');
 
 function renderSearchForm() {
-    var prom = getFormSettingsThen(),
-    $body = $('#mainBodyDiv'),
+    var $body = $('#mainBodyDiv'),
     $ejsForm = $(new EJS({url: 'views/search.ejs'}).render());
 
     getFormSettingsThen(function (result) { // Result is parsed formSettings, returns Promise
