@@ -2,7 +2,8 @@
 'use strict';
 
 var getFormSettingsThen = require('./getFormSettings.js'),
-renderForm = require('./formMaker.js');
+renderForm = require('./formMaker.js'),
+openItemPage = require('./singleItemPage.js');
 
 function renderSearchForm() {
     var $body = $('#mainBodyDiv'),
@@ -76,40 +77,6 @@ function addCheckboxListeners() {
 
 function addSingleItemListeners() {
     $('.itemLink').click(openItemPage);
-}
-
-function openItemPage(event) {
-    event.preventDefault();
-
-    var data = new FormData(),
-    url = '/search',
-    method = 'POST',
-    $body = $('#mainBodyDiv'),
-    ejsResult, searchResults;
-
-    console.log('blah');
-    console.log($(this).attr('data-id'));
-    data.append('_id', $(this).attr('data-id'));
-
-    $.ajax({
-        url: url,
-        data: data,
-        cache: false,
-        contentType: false,
-        processData: false,
-        method: 'POST',
-        success: function (data) {
-            getFormSettingsThen(function (formSettings) {
-                var singleItem = JSON.parse(data);
-                console.log('data');
-                console.log(data);
-
-                ejsResult = new EJS({url: 'views/singleItem.ejs'}).render({formSettings: formSettings, singleItem: singleItem});
-                $('#searchDiv').addClass('hidden');
-                $body.append(ejsResult);
-            });
-        }
-    });
 }
 
 module.exports = renderSearchForm;

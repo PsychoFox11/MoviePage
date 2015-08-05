@@ -1,21 +1,24 @@
 <div id="singleItemDiv">
     <h1>Single Item</h1><br>
-<% for (var i = 0; i < formSettings.length; i++) { %>
-    <span class="itemKey"><%= formSettings[i].name %>:&nbsp;</span>
-    <span class="itemData">
-        <% var currentValue = singleItem[0][formSettings[i].name] %>
-        <% if (currentValue instanceof Array) {
-            for (var j = 0; j < currentValue.length; j++) { %>
-                <%= currentValue[j] %>
-                <% if (j !== currentValue.length - 1) { %>
-                    ,&nbsp;
+    <% for (var i = 0; i < formSettings.length; i++) { %>
+        <span class="itemKey"><%= formSettings[i].name %>:&nbsp;</span>
+        <span class="itemData">
+            <% var currentValue = singleItem[0][formSettings[i].name] %>
+            <% if (currentValue instanceof Array) {
+                for (var j = 0; j < currentValue.length; j++) { %>
+                    <%= currentValue[j] %>
+                    <% if (j !== currentValue.length - 1) { %>
+                        ,&nbsp;
+                    <% } %>
                 <% } %>
+            <% } else { %>
+                <%= currentValue %>
             <% } %>
-        <% } else { %>
-            <%= currentValue %>
-        <% } %>
-        <br>    
-<% } %>
+            <br>    
+    <% } %>
+    <br>
+    <button type="button" id="singleItemBack">Back to Search Results</button>
+    <button type="button" id="editButton">Edit Item</button>
 
-<div id="outputDiv"></div>
+    <div id="outputDivSingle"></div>
 </div>
