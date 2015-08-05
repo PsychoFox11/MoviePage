@@ -33,7 +33,6 @@ function submitForm(event) {
     event.preventDefault();
 
     var data = new FormData(this),
-    xhr = new XMLHttpRequest(),
     url = this.action,
     method = 'POST',
     $output = $('#outputDiv'),
@@ -58,6 +57,7 @@ function submitForm(event) {
                 $output.empty();
                 $output.append(ejsResult);
                 addCheckboxListeners();
+                addSingleItemListeners();
             });
         }
     });
@@ -70,6 +70,44 @@ function addCheckboxListeners() {
             $('[data-type=\'' + this.value + '\']').addClass('hidden');
         } else {
             $('[data-type=\'' + this.value + '\']').removeClass('hidden');
+        }
+    });
+}
+
+function addSingleItemListeners() {
+    $('.itemLink').click(openItemPage);
+}
+
+function openItemPage(event) {
+    event.preventDefault();
+
+    var data = new FormData(),
+    url = '/search',
+    method = 'POST',
+    $body = $('#mainBodyDiv'),
+    ejsResult, searchResults;
+
+    console.log('blah');
+    console.log($(this).attr('data-id'));
+    data.append('_id', $(this).attr('data-id'));
+
+    $.ajax({
+        url: url,
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        method: 'POST',
+        success: function (data) {
+            getFormSettingsThen(function (formSettings) {
+                var singleItem = JSON.parse(data);
+                console.log('data');
+                console.log(data);
+
+                ejsResult = new EJS({url: 'views/singleItem.ejs'}).render({formSettings: formSettings, singleItem: singleItem});
+                $('#searchDiv').addClass('hidden');
+                $body.append(ejsResult);
+            });
         }
     });
 }

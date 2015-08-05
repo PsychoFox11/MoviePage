@@ -44,7 +44,7 @@ function openSearch(event) {
         event.preventDefault();
     }
 
-    if ($('#searchDiv').length === 0) {
+    if (($('#searchDiv').length === 0) || ($('#singleItemDiv').length !== 0)) { // If single item page is displayed, search is hidden
         renderSearchForm(); // From search.js
     }
 }

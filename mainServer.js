@@ -9,6 +9,7 @@ port = 3000,
 // Mongo stuff
 crud = require('./serverModules/crud'),
 url = 'mongodb://localhost:27017/mainDB',
+ObjectID = require('mongodb').ObjectID,
 // End Mongo stuff
 server, formSettings, dataTypes;
 
@@ -128,6 +129,9 @@ app.post('/search', function (req, res) {
             query[key] = {$in: query[key]};
         } else if (dataTypes[key] === 'string') {
             query[key] = new RegExp('^' + query[key] + '$', 'i');
+        } else if (key === '_id') {
+            console.log('idstuff');
+            query[key] = new ObjectID(query[key]);
         }
     }
 
@@ -138,6 +142,8 @@ app.post('/search', function (req, res) {
             res.send(err);
         } else {
             // JSCS res.send('blahhhhh');
+            console.log('docs');
+            console.log(JSON.stringify(docs));
             res.send(JSON.stringify(docs));
         }
     });
