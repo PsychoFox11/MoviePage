@@ -51,6 +51,7 @@ function renderForm(searchTypes, mode) { // Mode should be 'simple' or 'advanced
             case 'year': {
                 html += name + ': </span><select name=\"' + name + '\">';
                 var years = generateYears();
+                html += '<option value=\"\"></option>';
                 for (i = 0; i < years.length; i++) {
                     html += '<option value=\"' + years[i] + '\">' + years[i] + '</option>';
                 }
@@ -60,6 +61,7 @@ function renderForm(searchTypes, mode) { // Mode should be 'simple' or 'advanced
 
             case 'dropdown': {
                 html += name + ': </span><select name=\"' + name + '\">';
+                html += '<option value=\"\"></option>';
                 for (i = 0; i < values.length; i++) {
                     html += '<option value=\"' + values[i] + '\">' + values[i] + '</option>';
                 }
