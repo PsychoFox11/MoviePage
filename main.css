@@ -194,3 +194,6 @@ tr {
   margin-left: auto;
   margin-right: auto;
 }
+#editForm {
+  line-height: 0.5em;
+}

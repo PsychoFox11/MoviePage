@@ -72,7 +72,7 @@ function renderForm(searchTypes, mode) { // Mode should be 'simple' or 'advanced
             case 'checkbox': {
                 html += name + ': </span>';
                 for (i = 0; i < values.length; i++) {
-                    html += '<input type=\"checkbox\" name=\"' + name + '\" value=\"' + values[i] + '\">' + values[i] + ' </input>';
+                    html += '<input type=\"checkbox\" name=\"' + name + '\" + value=\"' + values[i] + '\">' + values[i] + ' </input>';
                 }
                 break;
             }

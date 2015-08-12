@@ -1,14 +1,16 @@
 <div id="singleItemDiv">
     <h1>Single Item</h1><br>
     <% for (var i = 0; i < formSettings.length; i++) { %>
-        <span class="itemKey"><%= formSettings[i].name %>:&nbsp;</span>
+        <span class="itemKey" data-name=<%= formSettings[i].name %> data-type=<%= formSettings[i].type %>><%= formSettings[i].name %>:&nbsp;</span>
         <span class="itemData">
             <% var currentValue = singleItem[0][formSettings[i].name] %>
             <% if (currentValue instanceof Array) {
                 for (var j = 0; j < currentValue.length; j++) { %>
-                    <%= currentValue[j] %>
+                    
                     <% if (j !== currentValue.length - 1) { %>
-                        ,&nbsp;
+                        <%= currentValue[j] %>,&nbsp;
+                    <% } else { %>
+                        <%= currentValue[j] %>
                     <% } %>
                 <% } %>
             <% } else { %>
@@ -18,7 +20,7 @@
     <% } %>
     <br>
     <button type="button" id="singleItemBack">Back to Search Results</button>
-    <button type="button" id="editButton">Edit Item</button>
+    <button type="button" id="editButton" data-id="<%= singleItem[0]._id %>">Edit Item</button>
 
     <div id="outputDivSingle"></div>
 </div>
