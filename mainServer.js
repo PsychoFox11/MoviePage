@@ -38,11 +38,25 @@ function setFormSettings() {
     });
 }
 
-function fixQuery(query) { // Corrects datatypes since formData object sends everything as strings
+function fixQuery(query, type) { // Corrects datatypes since formData object sends everything as strings
     var currentType, value;
 
     for (var key in query) {
         currentType = dataTypes[key];
+
+        if (key === '_id') {
+            console.log('idstuff');
+            query[key] = new ObjectID(query[key]);
+        }
+
+        if (type === 'search') {
+            console.log('key: ' + query[key] + ' type: ' + typeof query[key]);
+            if (query[key] instanceof Array) {
+                query[key] = {$in: query[key]};
+            } else if (currentType === 'string') {
+                query[key] = new RegExp('^' + query[key] + '$', 'i');
+            }
+        }
 
         switch (currentType) {
             case 'int': {
@@ -59,6 +73,7 @@ function fixQuery(query) { // Corrects datatypes since formData object sends eve
         }
     }
 }
+
 
 // Connect to DB and get form settings
 crud.connect(url, function (err, result) {
@@ -91,7 +106,7 @@ app.post('/create', function (req, res) {
     var query = req.body,
     returnResult;
 
-    fixQuery(query);
+    fixQuery(query, 'create');
 
     crud.create(query, 'test', function (err, result) {
         if (err) {
@@ -121,19 +136,7 @@ app.post('/search', function (req, res) {
     var searchColl = 'test', // DB collection to search
     query = req.body;
 
-    fixQuery(query);
-
-    for (var key in query) {
-        console.log('key: ' + query[key] + ' type: ' + typeof query[key]);
-        if (query[key] instanceof Array) {
-            query[key] = {$in: query[key]};
-        } else if (dataTypes[key] === 'string') {
-            query[key] = new RegExp('^' + query[key] + '$', 'i');
-        } else if (key === '_id') {
-            console.log('idstuff');
-            query[key] = new ObjectID(query[key]);
-        }
-    }
+    fixQuery(query, 'search');
 
     console.log('query: ' + JSON.stringify(query));
 
