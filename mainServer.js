@@ -8,7 +8,7 @@ base = 'public',
 port = 3000,
 // Mongo stuff
 crud = require('./serverModules/crud'),
-url = 'mongodb://localhost:27017/mainDB',
+url = 'mongodb://localhost/mainDB',
 ObjectID = require('mongodb').ObjectID,
 // End Mongo stuff
 server, formSettings, dataTypes;
@@ -90,6 +90,20 @@ app.use(express.static(base));
 
 // Multer parses multiform data, then we set upload dir
 app.use(multer({dest: './uploads/'}));
+
+app.get('/angular', function (req, res) {
+    var options = {
+        root: __dirname + '/' + base + '/'
+    };
+    res.sendFile('angular.html', options, function (err) {
+        if (err) {
+            console.log(err);
+            res.status(err.status).end();
+        } else {
+            console.log('Request URL: ' + req.originalUrl);
+        }
+    });
+});
 
 // Temporary - echos string
 app.post('/post', function (req, res) {
