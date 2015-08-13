@@ -122,6 +122,38 @@ app.post('/create', function (req, res) {
 
 });
 
+// Update item in DB
+app.post('/update', function (req, res) {
+    // JSCS console.log('CREATE: ' + JSON.stringify(req.body));
+    var query = req.body,
+    returnResult, id, newQuery;
+
+    fixQuery(query, 'update');
+
+    id = { _id: query._id };
+    delete query._id;
+    console.log('query id: ' + id);
+
+    newQuery = {
+        $set: query
+    };
+
+    console.log('newQuery');
+    console.log(JSON.stringify(newQuery));
+    crud.update(id, newQuery, 'test', function (err, result) {
+        if (err) {
+            console.log(err);
+            res.send(err);
+        } else {
+            // Removing _id since Mongo adds it to req.body, but we don't need it on the client side
+            delete req.body._id;
+            res.send(JSON.stringify(req.body));
+        }
+
+    });
+
+});
+
 // Fetch form maker settings
 app.post('/settings', function (req, res) {
     if (formSettings) {
