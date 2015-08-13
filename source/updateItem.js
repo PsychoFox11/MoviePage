@@ -2,7 +2,8 @@
 'use strict';
 
 var renderForm = require('./formMaker.js'),
-getFormSettingsThen = require('./getFormSettings.js');
+getFormSettingsThen = require('./getFormSettings.js'),
+deleteItem = require('./deleteItem.js');
 
 function setEditValues (formSettings, results, $ejsForm) {
     var result = JSON.parse(results)[0],
@@ -64,6 +65,7 @@ function editItem(event) {
                     opacity: 0
                 });
                 $('#editForm').submit(updateItem);
+                $('#deleteBtn').click(deleteItem);
             });
         }
     });
@@ -118,9 +120,6 @@ function updateItem(event) {
     console.log('Updating Item');
 
     data.append('_id', itemId);
-
-    console.log(document.getElementsByName('Format').length);
-    console.log(this.Title.value);
 
     $.ajax({
         url: url,

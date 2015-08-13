@@ -54,7 +54,7 @@ function fixQuery(query, type) { // Corrects datatypes since formData object sen
             if (query[key] instanceof Array) {
                 query[key] = {$in: query[key]};
             } else if (currentType === 'string') {
-                query[key] = new RegExp('^' + query[key] + '$', 'i');
+                query[key] = new RegExp(query[key], 'i');
             }
         }
 
@@ -126,7 +126,7 @@ app.post('/create', function (req, res) {
 app.post('/update', function (req, res) {
     // JSCS console.log('CREATE: ' + JSON.stringify(req.body));
     var query = req.body,
-    returnResult, id, newQuery;
+    id, newQuery;
 
     fixQuery(query, 'update');
 
@@ -147,6 +147,27 @@ app.post('/update', function (req, res) {
         } else {
             // Removing _id since Mongo adds it to req.body, but we don't need it on the client side
             delete req.body._id;
+            res.send(JSON.stringify(req.body));
+        }
+
+    });
+
+});
+
+// Delete item from DB
+app.post('/delete', function (req, res) {
+    // JSCS console.log('CREATE: ' + JSON.stringify(req.body));
+    var query = req.body;
+
+    fixQuery(query, 'delete');
+    console.log('deleting');
+
+    crud.delete(query, 'test', function (err, result) {
+        if (err) {
+            console.log(err);
+            res.send(err);
+        } else {
+            // Removing _id since Mongo adds it to req.body, but we don't need it on the client side
             res.send(JSON.stringify(req.body));
         }
 
@@ -182,6 +203,15 @@ app.post('/search', function (req, res) {
             res.send(JSON.stringify(docs));
         }
     });
+});
+
+// Upload stuff
+app.post('/upload', function (req, res) {
+    for (var key in req.body) {
+        console.log(JSON.stringify(req.body[key]));
+    }
+
+    res.send(req.body);
 });
 
 // Start the server

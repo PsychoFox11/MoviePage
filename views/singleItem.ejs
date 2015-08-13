@@ -1,10 +1,10 @@
 <div id="singleItemDiv">
     <h1>Single Item</h1><br>
     <% if (updated) { %>
-    <br>
     <span class="updated">UPDATED!</span>
-    <br>
     <% } %>
+    <br>
+    <br>
     <% for (var i = 0; i < formSettings.length; i++) { %>
         <span class="itemKey" data-name=<%= formSettings[i].name %> data-type=<%= formSettings[i].type %>><%= formSettings[i].name %>:&nbsp;</span>
         <span class="itemData">
