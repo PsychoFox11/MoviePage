@@ -9,10 +9,10 @@ module.exports = function (grunt) {
                 jshintrc: true,
                 ignores: ['node_module/**/*', 'libraries/**/*']
             },
-            all: ['source/*.js', 'mainserver.js', 'gruntfile.js', 'serverModules/*.js']
+            all: ['angular/js/*.js', 'source/*.js', 'mainserver.js', 'gruntfile.js', 'serverModules/*.js']
         },
         jscs: {
-            src: ['source/*.js', 'mainserver.js', 'gruntfile.js', 'serverModules/*.js'],
+            src: ['angular/js/*.js', 'source/*.js', 'mainserver.js', 'gruntfile.js', 'serverModules/*.js'],
             options: {
                 config: '../.jscsrc'
             }
@@ -36,7 +36,7 @@ module.exports = function (grunt) {
             }
         },
         exec: {
-            deploy: 'rm -r public/* && cp -r  bundle*.js *.html *.css views images libraries public'
+            deploy: 'rm -r public/* && cp -r  bundle*.js *.html *.css views images libraries public && cp -r angular/* public'
         },
         less: {
             development: {

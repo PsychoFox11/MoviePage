@@ -1,0 +1,26 @@
+<ul class="unstyled">
+  <li ng-repeat="stock in stocks">
+    <input type="checkbox" ng-model="stock.checked" ng-click="click(stock)">{{stock.id}}</li>
+</ul>
+<hr>
+<table>
+  <tr>
+    <th>Stock</th>
+    <th ng-repeat="key in keys">{{labels[key]}}</th>
+  </tr>
+  <tr ng-repeat="(stock, data) in tickers">
+    <td>{{stock}}</td>
+    <td ng-repeat="key in keys">{{data[key]}}</td>
+  </tr>
+</table>
+<hr>
+<table>
+  <tr>
+    <th>Stock</th>
+    <th ng-repeat="(stock, data) in tickers">{{stock}}</th>
+  </tr>
+  <tr ng-repeat="key in keys">
+    <td>{{labels[key]}}</td>
+    <td ng-repeat="(stock,data) in tickers">{{data[key]}}</td>
+  </tr>
+</table>
