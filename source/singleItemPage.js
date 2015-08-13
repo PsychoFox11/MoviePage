@@ -34,7 +34,7 @@ function openItemPage(event) {
             getFormSettingsThen(function (formSettings) {
                 var singleItem = JSON.parse(data);
 
-                ejsResult = new EJS({url: 'views/singleItem.ejs'}).render({formSettings: formSettings, singleItem: singleItem, updated: false});
+                ejsResult = new EJS({url: 'views/singleItem.ejs'}).render({formSettings: formSettings, singleItem: singleItem});
                 $('#searchDiv').addClass('hidden');
                 $body.append(ejsResult);
                 $('#singleItemBack').click(goBack);

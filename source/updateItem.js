@@ -5,7 +5,7 @@ var renderForm = require('./formMaker.js'),
 getFormSettingsThen = require('./getFormSettings.js'),
 deleteItem = require('./deleteItem.js');
 
-function setEditValues (formSettings, results, $ejsForm) {
+function setEditValues (formSettings, results, $ejsForm) { // Populates the form with existing values
     var result = JSON.parse(results)[0],
     currentValue, currentName;
 
@@ -16,12 +16,11 @@ function setEditValues (formSettings, results, $ejsForm) {
         if (formSettings[i].type !== 'checkbox') {
             $ejsForm.find('[name=\'' + currentName + '\']').val(currentValue);
         } else {
-            if (currentValue instanceof Array) {
+            if (currentValue instanceof Array) { // Populate checkboxes from Array
                 for (var j = 0; j < currentValue.length; j++) {
                     $ejsForm.find('[name=\'' + currentName + '\']' + '[value=\'' + currentValue[j] + '\']').attr('checked', true);
-                    // $ejsForm.find('[name=Format][value=Blu-ray]').attr('checked', true);
                 }
-            } else {
+            } else { // If not an array, populate single checkbox
                 $ejsForm.find('[name=\'' + currentName + '\']' + '[value=\'' + currentValue + '\']').attr('checked', true);
             }
         }
@@ -32,14 +31,12 @@ function editItem(event) {
     event.preventDefault();
 
     var data = new FormData(),
-    url = '/search',
+    url = '/search', // Use search to look up the item's current values
     method = 'POST',
     itemId = $(this).attr('data-id'),
     $ejsForm = $(new EJS({url: 'views/editItem.ejs'}).render({itemId: itemId}));
 
-    data.append('_id', itemId);
-    console.log('button data id');
-    console.log($(this).attr('data-id'));
+    data.append('_id', itemId); // Look up by id
 
     $.ajax({
         url: url,
@@ -51,11 +48,9 @@ function editItem(event) {
         success: function (data) {
 
             getFormSettingsThen(function (formSettings) {
-                console.log('here23');
                 $ejsForm.find('#inputs').html(renderForm(formSettings));
+                setEditValues(formSettings, data, $ejsForm); // Populate the form with the current values
 
-                setEditValues(formSettings, data, $ejsForm);
-                console.log('edited values');
                 $.colorbox({
                     open: true, // Open the lightbox immediately.
                     href: $ejsForm, // Show this html.
@@ -71,13 +66,13 @@ function editItem(event) {
     });
 }
 
-function goBack(event) { // Also in singleItemPage.js - combine
+function goBack(event) { // Remove the single item page and unhide the search results
 
     $('#singleItemDiv').remove();
     $('#searchDiv').removeClass('hidden');
 }
 
-function openUpdatedItemPage(itemId) {
+function openUpdatedItemPage(itemId) { // Once updates are made, reflect them on the single item page
 
     var data = new FormData(),
     url = '/search',
@@ -97,9 +92,11 @@ function openUpdatedItemPage(itemId) {
         success: function (data) {
             getFormSettingsThen(function (formSettings) {
                 var singleItem = JSON.parse(data);
-                ejsResult = new EJS({url: 'views/singleItem.ejs'}).render({formSettings: formSettings, singleItem: singleItem, updated: true});
+                // Set updated to true on EJS to reveal 'Updated' text
+                ejsResult = new EJS({url: 'views/singleItem.ejs'}).render({formSettings: formSettings, singleItem: singleItem});
                 $('#singleItemDiv').remove();
                 $body.append(ejsResult);
+                $('#updated').removeClass('hidden');
                 $('#updatedSearch').removeClass('hidden');
                 $('#singleItemBack').click(goBack);
                 $('#editButton').click(editItem);
