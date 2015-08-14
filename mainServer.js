@@ -100,7 +100,7 @@ function fixQuery(query, method) { // Corrects datatypes since formData object s
                 break;
             }
         }
-        
+
         query[key] = currentValue;
     }
 }
