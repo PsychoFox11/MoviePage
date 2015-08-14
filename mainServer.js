@@ -41,7 +41,7 @@ function setFormSettings() {
 function fixQuery(query, method) { // Corrects datatypes since formData object sends everything as strings
     var currentType, currentValue, value;
 
-    if (method === 'upload') {
+    if (method === 'upload') { // If from a TSV upload, separate into individual items then run fixQuery on each
         if (query instanceof Array) {
             for (var i = 0; i < query.length; i++) {
                 fixQuery(query[i], 'uploadItem');
@@ -61,7 +61,7 @@ function fixQuery(query, method) { // Corrects datatypes since formData object s
         }
 
         switch (method) {
-            case 'search': {
+            case 'search': { // Format array query properly with $in, set string search to use RegExp
                 console.log('key: ' + currentValue + ' type: ' + typeof currentValue);
                 if (currentValue instanceof Array) {
                     currentValue = {$in: currentValue};
@@ -71,7 +71,7 @@ function fixQuery(query, method) { // Corrects datatypes since formData object s
                 break;
             }
 
-            case 'uploadItem': {
+            case 'uploadItem': { // Convert comma seperated values into an array where applicible, trim spaces
                 if (currentType === 'array') {
                     if (currentValue.indexOf(',') !== -1) {
                         currentValue = currentValue.split(',');
