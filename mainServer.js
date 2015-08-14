@@ -117,10 +117,15 @@ app.post('/post', function (req, res) {
 // Add item to DB
 app.post('/create', function (req, res) {
     // JSCS console.log('CREATE: ' + JSON.stringify(req.body));
-    var query = req.body,
-    returnResult;
+    var query = req.body;
+
+    console.log('origQuery');
+    console.log(query);
 
     fixQuery(query, 'create');
+
+    console.log('query');
+    console.log(query);
 
     crud.create(query, 'test', function (err, result) {
         if (err) {
@@ -213,19 +218,32 @@ app.post('/search', function (req, res) {
         } else {
             // JSCS res.send('blahhhhh');
             console.log('docs');
-            console.log(JSON.stringify(docs));
+            // JSCS console.log(JSON.stringify(docs));
             res.send(JSON.stringify(docs));
         }
     });
 });
 
-// Upload stuff
 app.post('/upload', function (req, res) {
-    for (var key in req.body) {
-        console.log(JSON.stringify(req.body[key]));
-    }
+    var query = JSON.parse(req.body.jsonDb);
+    console.log('query');
+    console.log(query);
 
-    res.send(req.body);
+    fixQuery(query, 'upload');
+
+    console.log('fixed');
+    console.log(query);
+
+    crud.create(query, 'test', function (err, result) {
+        if (err) {
+            console.log(err);
+            res.send(err);
+        } else {
+            res.send(JSON.stringify(req.body));
+        }
+
+    });
+
 });
 
 // Start the server

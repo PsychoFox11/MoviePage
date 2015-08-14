@@ -39,9 +39,10 @@ function uploadTable(objects) {
         processData: false,
         method: method,
         success: function (res) {
-            returnedObjs = JSON.parse(res.jsonDb);
-            drawTable(returnedObjs);
-            createEditForm(returnedObjs);
+            // JSCS returnedObjs = JSON.parse(res.jsonDb);
+            drawTable(objects);
+            // JSCS createEditForm(objects);
+            console.log('Upload Done');
         },
         error: function (err) {
             $('#outputDiv').html(err);

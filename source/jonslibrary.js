@@ -11,6 +11,14 @@ var jon = {
         lines = tsv.split('\n');
         header = lines[0].split('\t');
 
+        $.each(header, function (index, values) {
+            header[index] = values.replace(/\r/g, '');
+        });
+
+        $.each(lines, function (index, values) {
+            lines[index] = values.replace(/\r/g, '');
+        });
+
         for (i = 1; i < lines.length; i++) {
             singleLine = lines[i].split('\t');
             tempMovie = {};
