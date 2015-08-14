@@ -226,12 +226,10 @@ app.post('/search', function (req, res) {
 
 app.post('/upload', function (req, res) {
     var query = JSON.parse(req.body.jsonDb);
-    console.log('query');
-    console.log(query);
 
     fixQuery(query, 'upload');
 
-    console.log('fixed');
+    console.log('query');
     console.log(query);
 
     crud.create(query, 'test', function (err, result) {
