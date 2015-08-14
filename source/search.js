@@ -51,15 +51,35 @@ function submitForm(event) {
         method: 'POST',
         success: function (data) {
             getFormSettingsThen(function (formSettings) {
-                console.log('results');
-                console.log(data);
+                console.log('searching');
                 searchResults = JSON.parse(data);
+                sortResults(formSettings, searchResults);
                 ejsResult = new EJS({url: 'views/searchResults.ejs'}).render({formSettings: formSettings, searchResults: searchResults});
                 $output.empty();
                 $output.append(ejsResult);
                 addCheckboxListeners();
                 addSingleItemListeners();
             });
+        }
+    });
+}
+
+function sortResults(formSettings, results) { // Sort search results based on whichever key is order 0 in formSettings
+    var mainKey;
+
+    for (var key in formSettings) { // Determine which is the main key
+        if (formSettings[key].order === 0) {
+            mainKey = formSettings[key].name;
+        }
+    }
+
+    results.sort(function (a, b) {
+        if (a[mainKey] > b[mainKey]) {
+            return 1;
+        } else if (a[mainKey] < b[mainKey]) {
+            return -1;
+        } else {
+            return 0;
         }
     });
 }
