@@ -38,39 +38,70 @@ function setFormSettings() {
     });
 }
 
-function fixQuery(query, type) { // Corrects datatypes since formData object sends everything as strings
-    var currentType, value;
+function fixQuery(query, method) { // Corrects datatypes since formData object sends everything as strings
+    var currentType, currentValue, value;
+
+    if (method === 'upload') {
+        if (query instanceof Array) {
+            for (var i = 0; i < query.length; i++) {
+                fixQuery(query[i], 'uploadItem');
+            }
+        }
+        return;
+    }
+
 
     for (var key in query) {
         currentType = dataTypes[key];
+        currentValue = query[key];
 
         if (key === '_id') {
             console.log('idstuff');
-            query[key] = new ObjectID(query[key]);
+            currentValue = new ObjectID(currentValue);
         }
 
-        if (type === 'search') {
-            console.log('key: ' + query[key] + ' type: ' + typeof query[key]);
-            if (query[key] instanceof Array) {
-                query[key] = {$in: query[key]};
-            } else if (currentType === 'string') {
-                query[key] = new RegExp(query[key], 'i');
+        switch (method) {
+            case 'search': {
+                console.log('key: ' + currentValue + ' type: ' + typeof currentValue);
+                if (currentValue instanceof Array) {
+                    currentValue = {$in: currentValue};
+                } else if (currentType === 'string') {
+                    currentValue = new RegExp(currentValue, 'i');
+                }
+                break;
+            }
+
+            case 'uploadItem': {
+                if (currentType === 'array') {
+                    if (currentValue.indexOf(',') !== -1) {
+                        currentValue = currentValue.split(',');
+                        for (var j = 0; j < currentValue.length; j++) {
+                            currentValue[j] = currentValue[j].trim();
+                        }
+
+                        if (currentValue instanceof Array && currentValue.length === 1) {
+                            currentValue = currentValue[0].trim();
+                        }
+                    }
+                }
             }
         }
 
         switch (currentType) {
             case 'int': {
-                value = parseInt(query[key]);
-                query[key] = isNaN(value) ? null : value;
+                value = parseInt(currentValue);
+                currentValue = isNaN(value) ? null : value;
                 break;
             }
 
             case 'float': {
-                value = parseFloat(query[key]);
-                query[key] = isNaN(value) ? null : value;
+                value = parseFloat(currentValue);
+                currentValue = isNaN(value) ? null : value;
                 break;
             }
         }
+        
+        query[key] = currentValue;
     }
 }
 
