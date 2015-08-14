@@ -216,7 +216,6 @@ app.post('/search', function (req, res) {
         if (err) {
             res.send(err);
         } else {
-            // JSCS res.send('blahhhhh');
             console.log('docs');
             // JSCS console.log(JSON.stringify(docs));
             res.send(JSON.stringify(docs));
