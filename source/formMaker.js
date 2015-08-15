@@ -17,7 +17,7 @@ function generateYears(min, max) {
 function renderForm(searchTypes, mode) { // Mode should be 'simple' or 'advanced', pass nothing for all
     var type = '',
     html = '',
-    currentKey, i, j, text, values, htmlTemp, name;
+    currentKey, i, j, text, values, htmlTemp, name, dataType, step;
 
     // Generate html for form inputs
     for (j = 0; j < searchTypes.length; j++) {
@@ -38,6 +38,7 @@ function renderForm(searchTypes, mode) { // Mode should be 'simple' or 'advanced
 
         name = currentKey.name;
         type = currentKey.type;
+        dataType = currentKey.dataType;
         values = currentKey.values ? currentKey.values : null; // Values must always be an array, even if only one element
         html += '<span>';
 
@@ -49,8 +50,16 @@ function renderForm(searchTypes, mode) { // Mode should be 'simple' or 'advanced
             }
 
             case 'year': {
+                var years;
                 html += name + ': </span><select name=\"' + name + '\">';
-                var years = generateYears();
+                if (values) {
+                    if (values instanceof Array) {
+                        years = generateYears(values[0], values[1]);
+                    }
+                } else {
+                    years = generateYears();
+                }
+
                 html += '<option value=\"\"></option>';
                 for (i = 0; i < years.length; i++) {
                     html += '<option value=\"' + years[i] + '\">' + years[i] + '</option>';
@@ -95,7 +104,8 @@ function renderForm(searchTypes, mode) { // Mode should be 'simple' or 'advanced
                     }
                 }
                 html += name + text + ': </span>';
-                html += '<input type=\"number\" name=\"' + name + '\"' + htmlTemp + '></input>';
+                step = dataType === 'float' ? 0.01 : 1;
+                html += '<input type=\"number\" name=\"' + name + '\" step=\"' + step + '\"' + htmlTemp + '></input>';
                 break;
             }
 

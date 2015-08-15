@@ -1,0 +1,34 @@
+<table id="editFormTable">
+    <thead>
+        <tr class="headerRow">
+            <th>Name</th>
+            <th>Input Type</th>
+            <th>Data Type</th>
+            <th>Values</th>
+            <th>Order</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for (var i = 0; i < formSettings.length; i++) { %>
+            <tr>
+                <td><a href="#" class="formEditLink" data-name=<%= formSettings[i].name %>><%= formSettings[i].name %></a></td>
+                <td><%= formSettings[i].type %></td>
+                <td><%= formSettings[i].dataType %></td>
+                <% if (formSettings[i].values instanceof Array) { %>
+                    <td>
+                    <% for (var j = 0; j < formSettings[i].values.length; j++) { %>
+                        <% if (j + 1 !== formSettings[i].values.length) { %>
+                            <%= formSettings[i].values[j] %>,
+                        <% } else { %>
+                            <%= formSettings[i].values[j] %>
+                        <% } %>
+                    <% } %>
+                </td>
+                <% } else { %>
+                    <td><%= formSettings[i].values %></td>
+                <% } %>
+                <td><%= formSettings[i].order %></td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>

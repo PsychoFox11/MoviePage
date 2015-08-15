@@ -1,0 +1,31 @@
+<div id="editFormItemDiv">
+    <h1>Edit Form Item</h1>
+<form id="editFormItem" class="editFormItem" data-name=<%= formItem.name %> action="/updateFormItem">
+<div id="inputs" class="inputs">
+
+<span>Name: </span>
+<input id="nameInput" type="text" name="name" value=<%= formItem.name %>></input>
+<br><br>
+<span>Input Type:</span>
+<select name="type" id="typeSelector">
+    <option value="checkbox">Checkbox</option>
+    <option value="dropdown">Dropdown</option>
+    <option value="date">Date</option>
+    <option value="number">Number</option>
+    <option value="text">Text</option>
+    <option value="year">Year</option>
+</select>
+<br><br>
+<span>Data Type:</span>
+<span id="dataTypeSelect"></span>
+<span id="valueSelect"></span>
+
+<br><br>
+<span>Order: </span>
+<input id="orderSelect" name="order" type="number" min="0" max="99" value=<%= formItem.order %>></input>
+</div><br><br>
+    <input type="submit" value="Submit" ></input>
+    <button id="deleteBtn" data-name=<%= formItem.name %>>Delete</button>
+</form>
+<div id="outputDiv"></div>
+</div>

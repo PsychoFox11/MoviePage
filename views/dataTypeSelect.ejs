@@ -1,0 +1,8 @@
+<% if (formItem.type === 'checkbox' || formItem.type === 'date' || formItem.type === 'year' || formItem.type === 'text' || formItem.type === 'dropdown') { %>
+    <%= formItem.type %>
+<% } else if (formItem.type === 'number') { %> 
+    <select name="dataType" id="dataTypeSelector">
+        <option value="int">Whole Number</option>
+        <option value="float">Decimal Number</option>
+    </select>
+<% } %>

@@ -1,0 +1,32 @@
+<% if (formItem.type === 'number' || formItem.type === 'year') { %>
+    <br><br>
+    <span>Values:</span>
+    <span>Min: </span>
+    <input id="numberMin" type="number" value=<%= ((formItem.values && formItem.values instanceof Array) && formItem.values[0] != null) ? formItem.values[0] : '' %>></input>
+    <span>Max: </span>
+    <input id="numberMax" type="number" value=<%= ((formItem.values && formItem.values instanceof Array) && formItem.values[1] != null) ? formItem.values[1] : '' %>></input>
+    <% console.log('ejs ' + formItem.type) %>
+<% } else if (formItem.type === 'checkbox' || formItem.type === 'dropdown') { %>
+    <br><br>
+    <span>Values:</span>
+    <span>(Seperate with commas)</span>
+    <input id="listValues" type="textbox"
+    <% if (formItem.values) {
+        if (formItem.values instanceof Array) { %>
+            <% var valueString = '\"' %>
+            <% for (var i = 0; i < formItem.values.length; i++) { %>
+                <% valueString += formItem.values[i] %>
+                <% console.log(formItem.values[i]) %>
+                <% if (i + 1 !== formItem.values.length) { %>
+                    <% valueString += ',&nbsp;' %>
+                <% } %>                
+            <% } %>
+            <% valueString += '\"' %>
+            value=<%= valueString %>></input>
+        <% } else { %>
+            value=<%= formItem.values %>></input>
+        <% } %>
+    <% } else { %>
+        value=""></input>
+    <% } %>
+<% } %>
