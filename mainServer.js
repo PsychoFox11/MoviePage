@@ -217,6 +217,7 @@ app.post('/create', function (req, res) {
 // Update item in DB
 app.post('/update', function (req, res) {
     // JSCS console.log('CREATE: ' + JSON.stringify(req.body));
+    console.log('updating');
     var query = req.body,
     id, newQuery;
 

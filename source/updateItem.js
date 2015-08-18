@@ -59,7 +59,8 @@ function editItem(event) {
                     innerHeight: 390, // Set size of frame.
                     opacity: 0
                 });
-                $('#editForm').submit(updateItem);
+
+                $('#editItemForm').submit(updateItem);
                 $('#deleteBtn').click(deleteItem);
             });
         }
