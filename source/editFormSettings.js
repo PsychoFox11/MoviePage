@@ -7,17 +7,39 @@ function openFormSettings() {
     getFormSettingsThen(function (formSettings) {
 
         var $mainBodyDiv = $('#mainBodyDiv'),
-        ejsResult;
+        ejsResult, $ejsResult, cutoff;
 
-        ejsResult = new EJS({url: 'views/editFormSettings.ejs'}).render({formSettings: formSettings});
+        for (var i = 0; i < formSettings.length; i++) { // Determine where the cutoff is for Advanced fields.
+            if (formSettings[i].advanced) {
+                cutoff = i;
+                break;
+            }
+        }
+
+        $ejsResult = $(new EJS({url: 'views/editFormSettings.ejs'}).render({formSettings: formSettings, cutoff: cutoff}));
+        $ejsResult.find('#cutoffSelect').append(generateCutoffNumbers(cutoff));
         $mainBodyDiv.empty();
-        $mainBodyDiv.append(ejsResult);
+        $mainBodyDiv.append($ejsResult);
         addEditListeners();
     });
 }
 
 function addEditListeners() {
     $('.formEditLink').click(openEditBox);
+    $('#cutoffBtn').click(saveCutoff);
+}
+
+function generateCutoffNumbers(cutoff) {
+    var html = '';
+
+    for (var i = 1; i < 100; i++) {
+        html += '<option value=\"' + i + '\"';
+        if (i === cutoff) {
+            html += 'selected';
+        }
+        html += '>' + i + '</option>';
+    }
+    return html;
 }
 
 function openEditBox (event) {
@@ -42,9 +64,8 @@ function openEditBox (event) {
 
         $ejsResult = $(new EJS({url: 'views/editFormItem.ejs'}).render({formItem: currentItem}));
         dataTypeEjs = new EJS({url: 'views/dataTypeSelect.ejs'}).render({formItem: currentItem});
-        console.log('before');
         valueEjs = new EJS({url: 'views/valueSelect.ejs'}).render({formItem: currentItem});
-        console.log('after');
+
 
         $ejsResult.find('#dataTypeSelect').append(dataTypeEjs);
         $ejsResult.find('#valueSelect').append(valueEjs);
@@ -78,18 +99,13 @@ function openEditBox (event) {
 function changeTypes(event, newValues) {
     var dataTypeEjs, valueEjs;
 
-    console.log($('#typeSelector').val());
     newValues.type = $('#typeSelector').val();
     delete newValues.values;
-    console.log('newvalue');
-    console.log(newValues.type);
 
     $('#dataTypeSelect').empty();
     $('#valueSelect').empty();
-    console.log('beforeejs');
     dataTypeEjs = new EJS({url: 'views/dataTypeSelect.ejs'}).render({formItem: newValues});
     valueEjs = new EJS({url: 'views/valueSelect.ejs'}).render({formItem: newValues});
-    console.log('afterejs');
 
     $('#dataTypeSelect').append(dataTypeEjs);
     $('#valueSelect').append(valueEjs);
@@ -97,20 +113,19 @@ function changeTypes(event, newValues) {
 
 function updateItem(oldValues, formSettings) {
     var newValues = {},
+    newItem = new FormData(),
     destroy = false,
+    updateType = '',
+    includeValues = false,
+    orderSelect = false,
     numberMin, numberMax, valueText;
 
-    newValues.type = $('#typeSelector').val();
-
-    if (newValues.type !== oldValues.type) {
-        if (!confirm('Changing Types will erase all data for this field. Are you sure?')) {
-            return;
-        } else {
-            destroy = true;
-        }
-    }
-
     newValues.name = $('#nameInput').val();
+
+    if (newValues.name === '') {
+        alert('Name cannot be blank');
+        return;
+    }
 
     if (oldValues.name !== newValues.name) {
         for (var k = 0; k < formSettings.length; k++) {
@@ -118,6 +133,34 @@ function updateItem(oldValues, formSettings) {
                 alert('You cannot have two items with the same name.');
                 return;
             }
+            updateType = 'name';
+        }
+    }
+
+    newValues.order = $('#orderSelect').val();
+
+    if (oldValues.order !== (+newValues.order)) {
+        // JSCS orderChanged = true;
+        for (var j = 0; j < formSettings.length; j++) {
+            if (formSettings[j].order === (+newValues.order)) {
+                alert('There is already an item with that order number. Please correct and try again');
+                return;
+            }
+        }
+        if (updateType === 'name') {
+            updateType = 'nameOrder';
+        } else {
+            updateType = 'order';
+        }
+    }
+
+    newValues.type = $('#typeSelector').val();
+
+    if (newValues.type !== oldValues.type) {
+        if (!confirm('Changing Types will erase all data for this field. Are you sure?')) {
+            return;
+        } else {
+            updateType = 'destroy';
         }
     }
 
@@ -128,7 +171,7 @@ function updateItem(oldValues, formSettings) {
                 if (!confirm('Changing data types will erase all previous data for this field, are you sure?')) {
                     return;
                 } else {
-                    destroy = true;
+                    updateType = 'destroy';
                 }
             }
         }
@@ -163,14 +206,23 @@ function updateItem(oldValues, formSettings) {
     if (newValues.type === 'number' || newValues.type === 'year') {
         numberMin = isNaN($('#numberMin').val()) ? null : $('#numberMin').val();
         numberMax = isNaN($('#numberMax').val()) ? null : $('#numberMax').val();
+
+        if (numberMin === null && numberMax === null) {
+            newValues.values = null;
+        } else if (numberMax === null) {
+            newValues.values = [numberMin];
+        } else {
+            newValues.values = [numberMin, numberMax];
+        }
+        if (newValues.length === oldValues.length) {
+            for (var m = 0; m < newValues.length; m++) {
+                if (newValues[m] != oldValues[m]) {
+                    includeValues = true;
+                }
+            }
+        }
     }
-    if (numberMin === null && numberMax === null) {
-        newValues.values = null;
-    } else if (numberMax === null) {
-        newValues.values = [numberMin];
-    } else {
-        newValues.values = [numberMin, numberMax];
-    }
+
 
     if (newValues.type === 'checkbox' || newValues.type === 'dropdown') {
         valueText = $('#listValues').val();
@@ -183,11 +235,11 @@ function updateItem(oldValues, formSettings) {
 
             if (oldValues.values instanceof Array) {
                 if (oldValues.values.length > newValues.values.length) {
-                    destroy = true;
+                    updateType = 'destroy';
                 } else {
                     for (i = 0; i < oldValues.length; i++) {
                         if (oldValues[i] != newValues[i]) {
-                            destroy = true;
+                            updateType = 'destroy';
                         }
                     }
                 }
@@ -196,21 +248,10 @@ function updateItem(oldValues, formSettings) {
     }
 
     if (newValues.type === 'text' || newValues.type === 'date') {
-        newValues.values = null;
+        newValues.values = '';
     }
 
-    newValues.order = $('#orderSelect').val();
-
-    if (oldValues.order !== (+newValues.order)) {
-        for (var j = 0; j < formSettings.length; j++) {
-            if (formSettings[j].order === (+newValues.order)) {
-                alert('There is already an item with that order number. Please correct and try again');
-                return;
-            }
-        }
-    }
-
-    if (destroy) {
+    if (updateType == 'destroy') {
         if (!confirm('Data will be destroyed, are you sure?')) {
             return;
         }
@@ -218,6 +259,61 @@ function updateItem(oldValues, formSettings) {
 
     console.log('new item');
     console.log(JSON.stringify(newValues));
+
+    for (var key in newValues) {
+        newItem.append(key, newValues[key]);
+    }
+    console.log('update type');
+    console.log(updateType);
+    newItem.append('updateType', updateType);
+    newItem.append('oldName', oldValues.name);
+
+    sendUpdate(newItem);
+}
+
+function sendUpdate(newItem) {
+    var url = '/updateFormSettings',
+    method = 'POST';
+
+    $.ajax({
+        url: url,
+        data: newItem,
+        cache: false,
+        contentType: false,
+        processData: false,
+        method: method,
+        success: function (data) {
+            $.colorbox.close();
+            openFormSettings();
+        }
+    });
+}
+
+function saveCutoff (event) {
+    var newCutoff = parseInt($('#cutoffSelect').val()),
+    data = new FormData(),
+    url = '/updateAdvancedCutoff',
+    method = 'POST';
+
+    data.append('cutoff', newCutoff);
+
+    $.ajax({
+        url: url,
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        method: method,
+        success: function (data) {
+            $('#cutoffUpdated').removeClass('hidden');
+            $('#cutoffSpan').html(newCutoff);
+            $('#cutoffSelect').empty();
+            $('#cutoffSelect').append(generateCutoffNumbers(newCutoff));
+            setInterval(function () {
+                $('#cutoffUpdated').addClass('hidden');
+            }, 5000);
+        }
+    });
 }
 
 module.exports = openFormSettings;

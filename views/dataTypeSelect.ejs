@@ -3,6 +3,10 @@
 <% } else if (formItem.type === 'number') { %> 
     <select name="dataType" id="dataTypeSelector">
         <option value="int">Whole Number</option>
-        <option value="float">Decimal Number</option>
+        <option value="float" 
+        <% if (formItem.dataType === 'float') { %>
+            selected
+        <% } %>
+            >Decimal Number</option>
     </select>
 <% } %>

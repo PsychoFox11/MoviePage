@@ -4,13 +4,18 @@
 function generateYears(min, max) {
     var years = [];
 
+    if (min && !max) {
+        max = min + 100;
+    } else if (max && !min) {
+        min = max - 100;
+    }
+
     min = min ? min : 1900;
     max = max ? max : new Date().getFullYear();
 
     for (var i = max; i >= min; i--) {
         years.push(i);
     }
-
     return years; // Returns from greatest to smallest
 }
 
@@ -55,11 +60,13 @@ function renderForm(searchTypes, mode) { // Mode should be 'simple' or 'advanced
                 if (values) {
                     if (values instanceof Array) {
                         years = generateYears(values[0], values[1]);
+                    } else {
+                        years = generateYears();
                     }
                 } else {
+                    console.log('else');
                     years = generateYears();
                 }
-
                 html += '<option value=\"\"></option>';
                 for (i = 0; i < years.length; i++) {
                     html += '<option value=\"' + years[i] + '\">' + years[i] + '</option>';
@@ -92,7 +99,7 @@ function renderForm(searchTypes, mode) { // Mode should be 'simple' or 'advanced
                 if (values && (values.length > 0)) {
                     if (values.length === 2) {
                         if (values[0] !== null) {
-                            text = ' (' + values[0] + '-' + values[1] + ')';
+                            text = ' (' + values[0] + ' - ' + values[1] + ')';
                             htmlTemp += ' min=\"' + values[0] + '\" max=\"' + values[1] + '\"';
                         } else {
                             text = ' (Max: ' + values[1] + ')';
@@ -117,7 +124,8 @@ function renderForm(searchTypes, mode) { // Mode should be 'simple' or 'advanced
 
         html += '<br><br>';
     }
-
+    console.log('html');
+    console.log(html);
     return html;
 }
 

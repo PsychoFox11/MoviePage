@@ -7,14 +7,18 @@
 <input id="nameInput" type="text" name="name" value=<%= formItem.name %>></input>
 <br><br>
 <span>Input Type:</span>
-<select name="type" id="typeSelector">
-    <option value="checkbox">Checkbox</option>
-    <option value="dropdown">Dropdown</option>
-    <option value="date">Date</option>
-    <option value="number">Number</option>
-    <option value="text">Text</option>
-    <option value="year">Year</option>
-</select>
+<select name="type" id="typeSelector" required>
+    <% if (formItem.order != 0) { %>
+        <option value="checkbox">Checkbox</option>
+        <option value="dropdown">Dropdown</option>
+        <option value="date">Date</option>
+    <% } %>
+        <option value="number">Number</option>
+        <option value="text">Text</option>
+    <% if (formItem.order != 0) { %>    
+        <option value="year">Year</option>
+    <% } %>
+    </select>
 <br><br>
 <span>Data Type:</span>
 <span id="dataTypeSelect"></span>
@@ -22,7 +26,12 @@
 
 <br><br>
 <span>Order: </span>
-<input id="orderSelect" name="order" type="number" min="0" max="99" value=<%= formItem.order %>></input>
+<input id="orderSelect" name="order" type="number" min="1" max="99" value=<%= formItem.order %>
+<% if (formItem.order == 0) { %>
+    class="readOnly" readonly></input><span>&nbsp;Cannot change order of item in position 0.</span>
+<% } else { %>
+    ></input>
+<% } %>
 </div><br><br>
     <input type="submit" value="Submit" ></input>
     <button id="deleteBtn" data-name=<%= formItem.name %>>Delete</button>

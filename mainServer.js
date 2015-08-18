@@ -39,7 +39,49 @@ function setFormSettings() {
 }
 
 function fixQuery(query, method) { // Corrects datatypes since formData object sends everything as strings
-    var currentType, currentValue, value;
+    var isNumbers = true,
+    allNulls = true,
+    currentType, currentValue, value, tempArray;
+
+    if (method === 'formSettings') {
+        if (query.hasOwnProperty('order')) {
+            query.order = isNaN(parseInt(query.order)) ? null : parseInt(query.order);
+        }
+        if (query.type === 'checkbox' || query.type === 'dropdown' || query.type === 'year' || query.type === 'number') {
+            tempArray = query.values.split(',');
+            for (var m = 0; m < tempArray.length; m++) {
+                tempArray[m] = tempArray[m].trim();
+                console.log('tempArray');
+                console.log(typeof tempArray[m]);
+                if (tempArray[m] !== '') {
+                    allNulls = false;
+                }
+            }
+            if (allNulls) {
+                tempArray = [];
+            }
+            query.values = tempArray;
+        }
+
+        if (query.type === 'number' || query.type === 'year') {
+            if (query.values instanceof Array) {
+                for (var k = 0; k < query.values.length; k++) {
+                    if (query.dataType === 'float') {
+                        query.values[k] = isNaN(parseFloat(query.values[k])) ? null : parseFloat(query.values[k]);
+                    } else if (query.dataType === 'int') {
+                        query.values[k] = isNaN(parseInt(query.values[k])) ? null : parseInt(query.values[k]);
+                    }
+                }
+            } else {
+                if (query.dataType === 'float') {
+                    query.values = isNaN(parseFloat(query.values)) ? null : parseFloat(query.values);
+                } else if (query.dataType === 'int') {
+                    query.values = isNaN(parseInt(query.values)) ? null : parseInt(query.values);
+                }
+            }
+        }
+    }
+
 
     if (method === 'upload') { // If from a TSV upload, separate into individual items then run fixQuery on each
         if (query instanceof Array) {
@@ -223,6 +265,136 @@ app.post('/delete', function (req, res) {
 
     });
 
+});
+
+app.post('/updateFormSettings', function (req, res) {
+    var query = req.body,
+    oldName = query.oldName,
+    newQuery = {},
+    finalQuery = {},
+    changeSelect = {},
+    changeDocs = {},
+    updateType = query.updateType;
+    console.log('updateType');
+    console.log(query.updateType);
+    delete query.oldName;
+
+    console.log('query');
+    console.log(JSON.stringify(query));
+
+    fixQuery(query, 'formSettings');
+
+    console.log('fixed');
+    console.log(JSON.stringify(query));
+
+    if (query.updateType === 'destroy') {
+        delete query.updateType;
+        console.log('destroying');
+    }
+    if (query.updateType === 'name' || query.updateType === 'nameOrder') {
+        console.log('name changed');
+        newQuery.name = query.name;
+    }
+    if (query.updateType === 'order' || query.updateType === 'nameOrder') {
+        console.log('order changed');
+        newQuery.order = query.order;
+    }
+    newQuery.type = query.type;
+
+    if (query.hasOwnProperty(updateType)) {
+        console.log('update type true');
+        delete query.updateType;
+        finalQuery = {$set: newQuery};
+    } else {
+        finalQuery = query;
+    }
+
+    // Make update queries
+    changeSelect[oldName] = {$exists: true};
+
+    console.log('update type');
+    console.log(updateType);
+
+    if (updateType === 'destroy') { // Remove the property from anything that has it.
+        changeDocs.$unset = {};
+        changeDocs.$unset[oldName] = 1;
+    }
+    if (updateType === 'name' || updateType === 'nameOrder') {
+        changeDocs.$rename = {};
+        changeDocs.$rename[oldName] = query.name;
+    }
+    if (updateType === 'order' || updateType === 'nameOrder') {
+        changeDocs.$set = {};
+        changeDocs.$set = {order: query.order};
+    }
+
+    console.log('changeSelect');
+    console.log(JSON.stringify(changeSelect));
+
+    console.log('changeDocs');
+    console.log(JSON.stringify(changeDocs));
+
+
+    console.log('final');
+    console.log(JSON.stringify(finalQuery));
+
+    crud.update({name: oldName}, finalQuery, 'formSettings', function (err, result) {
+        if (err) {
+            console.log(err);
+            res.send(err);
+        } else {
+            setFormSettings();
+            crud.updateMulti(changeSelect, changeDocs, 'test', function (err, result) {
+                if (err) {
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    console.log('Changed Form Setting stuff');
+                }
+            });
+            res.send(JSON.stringify(req.body));
+        }
+    });
+});
+
+app.post('/updateAdvancedCutoff', function (req, res) {
+    var query = req.body,
+    cutoff = parseInt(query.cutoff),
+    changeSelect = {},
+    changeDocs = {};
+
+    changeSelect.advanced = {$exists: true};
+
+    changeDocs.$unset = {};
+    changeDocs.$unset.advanced = 1;
+
+    crud.updateMulti(changeSelect, changeDocs, 'formSettings', function (err, result) {
+        if (err) {
+            console.log(err);
+            res.send(err);
+        } else {
+            console.log('Removed advanced property');
+            changeSelect = {};
+            changeDocs = {};
+
+            changeSelect.order = {};
+            changeSelect.order.$gte = cutoff;
+
+            changeDocs.$set = {};
+            changeDocs.$set.advanced = true;
+
+            crud.updateMulti(changeSelect, changeDocs, 'formSettings', function (err, result) {
+                if (err) {
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    setFormSettings();
+                    console.log('Set new advanced properties');
+                }
+                res.send(JSON.stringify(req.body));
+            });
+        }
+    });
 });
 
 // Fetch form maker settings

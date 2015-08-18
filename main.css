@@ -197,3 +197,7 @@ tr {
 #editForm {
   line-height: 0.5em;
 }
+.readOnly {
+  border-color: #999999;
+  background-color: #999999;
+}

@@ -67,6 +67,19 @@ crud = {
         } else {
             callback(new Error('DB not connected'));
         }
+    },
+
+    updateMulti: function (current, update, collectionName, callback) {
+        var collection;
+        if (db) {
+            collection = db.collection(collectionName);
+            // The {w: 1} tells it to wait for the first part to be done.
+            collection.update(current, update, {multi: true, w: 1}, function (err, result) {
+                callback(err, result);
+            });
+        } else {
+            callback(new Error('DB not connected'));
+        }
     }
 };
 

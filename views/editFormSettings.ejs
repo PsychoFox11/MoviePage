@@ -17,11 +17,20 @@
                 <% if (formSettings[i].values instanceof Array) { %>
                     <td>
                     <% for (var j = 0; j < formSettings[i].values.length; j++) { %>
+                        
                         <% if (j + 1 !== formSettings[i].values.length) { %>
-                            <%= formSettings[i].values[j] %>,
+                            <% if (formSettings[i].values[j] === null) { %>
+                                <%= 'null,' %>
+                            <% } else { %>
+                                <%= formSettings[i].values[j] %>,
+                            <% } %>
                         <% } else { %>
-                            <%= formSettings[i].values[j] %>
-                        <% } %>
+                            <% if (formSettings[i].values[j] === null) { %>
+                                <%= 'null' %>
+                            <% } else { %>
+                                <%= formSettings[i].values[j] %>
+                            <% } %>   
+                        <% } %>                   
                     <% } %>
                 </td>
                 <% } else { %>
@@ -32,3 +41,11 @@
         <% } %>
     </tbody>
 </table>
+<button id="newItemBtn" type="button">Add new form Item</button>
+<br><br>
+<span>Current advanced cutoff is <span id="cutoffSpan"><%= cutoff %></span>.<br> Use the dropdown below to change where the advanced fields start.<span><br>
+<select id="cutoffSelect">
+</select>
+<button id="cutoffBtn" type="button">Save Advanced Cutoff</button><span id="cutoffUpdated" class="hidden">Updated!</span>
+
+
