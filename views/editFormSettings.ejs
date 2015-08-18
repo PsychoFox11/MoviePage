@@ -11,7 +11,7 @@
     <tbody>
         <% for (var i = 0; i < formSettings.length; i++) { %>
             <tr>
-                <td><a href="#" class="formEditLink" data-name=<%= formSettings[i].name %>><%= formSettings[i].name %></a></td>
+                <td><a href="#" class="formEditLink" data-name="<%= formSettings[i].name %>"><%= formSettings[i].name %></a></td>
                 <td><%= formSettings[i].type %></td>
                 <td><%= formSettings[i].dataType %></td>
                 <% if (formSettings[i].values instanceof Array) { %>

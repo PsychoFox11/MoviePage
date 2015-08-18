@@ -77,7 +77,7 @@ function renderForm(searchTypes, mode) { // Mode should be 'simple' or 'advanced
 
             case 'dropdown': {
                 html += name + ': </span><select name=\"' + name + '\">';
-                html += '<option value=\"\"></option>';
+                html += '<option value=\"\">Any</option>';
                 for (i = 0; i < values.length; i++) {
                     html += '<option value=\"' + values[i] + '\">' + values[i] + '</option>';
                 }
