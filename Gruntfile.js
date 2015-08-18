@@ -9,10 +9,10 @@ module.exports = function (grunt) {
                 jshintrc: true,
                 ignores: ['node_module/**/*', 'libraries/**/*']
             },
-            all: ['angular/js/*.js', 'source/*.js', 'mainserver.js', 'gruntfile.js', 'serverModules/*.js']
+            all: ['angular/js/*.js', 'source/*.js', 'mainserver.js', 'gruntfile.js', 'passport-init.js', 'routes.js', 'serverModules/*.js']
         },
         jscs: {
-            src: ['angular/js/*.js', 'source/*.js', 'mainserver.js', 'gruntfile.js', 'serverModules/*.js'],
+            src: ['angular/js/*.js', 'source/*.js', 'mainserver.js', 'gruntfile.js', 'passport-init.js', 'routes.js', 'serverModules/*.js'],
             options: {
                 config: '../.jscsrc'
             }
