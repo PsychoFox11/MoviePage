@@ -35,7 +35,7 @@ gdaApp.config(function ($routeProvider, $locationProvider) {
 
 gdaApp.controller('mainController', ['$scope', '$http', function ($scope, $http) {
     $scope.message = 'Don\'t bother us!';
-    $http.jsonp('http://www.omdbapi.com/?callback=JSON_CALLBACK&s=Night%20of%20the%20Hunter&type=movie&tomatoes=true').success(function (json) {
+    $http.jsonp('https://www.omdbapi.com/?callback=JSON_CALLBACK&s=Night%20of%20the%20Hunter&type=movie&tomatoes=true').success(function (json) {
         console.log('right here');
         $scope.message = JSON.stringify(json);
     }).error(function (err) {
