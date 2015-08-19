@@ -287,12 +287,17 @@ function sendUpdate(newItem) {
         method: method,
         success: function (data) {
             $.colorbox.close();
+            saveCutoff();
             openFormSettings();
         }
     });
 }
 
 function saveCutoff (event) {
+    if (event) {
+        event.preventDefault();
+    }
+
     var newCutoff = parseInt($('#cutoffSelect').val()),
     data = new FormData(),
     url = '/updateAdvancedCutoff',
