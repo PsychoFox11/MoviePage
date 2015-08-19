@@ -215,7 +215,7 @@ function updateItem(oldValues, formSettings) {
         }
         if (newValues.values.length === oldValues.values.length) {
             for (var m = 0; m < newValues.values.length; m++) {
-                if (newValues.values[m] != oldValues.values[m]) {
+                if (newValues.values[m] !== oldValues.values[m]) {
                     updateType = 'destroy';
                 }
             }
