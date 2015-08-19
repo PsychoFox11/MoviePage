@@ -298,10 +298,12 @@ function saveCutoff (event) {
         event.preventDefault();
     }
 
-    var newCutoff = parseInt($('#cutoffSelect').val()),
+    var newCutoff = event ? parseInt($('#cutoffSelect').val()) : parseInt($('#cutoffSpan').text()),
     data = new FormData(),
     url = '/updateAdvancedCutoff',
     method = 'POST';
+    console.log('spanval');
+    console.log(parseInt($('#cutoffSpan').text()));
 
     data.append('cutoff', newCutoff);
 
