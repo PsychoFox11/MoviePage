@@ -4,7 +4,7 @@ var LocalStrategy = require('passport-local').Strategy,
 bCrypt = require('bcrypt-nodejs'),
 // Mongo stuff
 MongoClient = require('mongodb').MongoClient,
-url = (process.env.MONGOLAB_URI || 'mongodb://localhost') + '/mainDB',
+url = require('./dbConfig').url,
 userCollection = 'user',
 ObjectID = require('mongodb').ObjectID,
 // End Mongo stuff
@@ -77,10 +77,10 @@ module.exports = function (passport) {
                         dbUser.lastName = req.body.lastName;
 
                         console.log(JSON.stringify(req.body));
-                        /* JSCS collection.insert(dbUser, function (err, result) {
+                        collection.insert(dbUser, function (err, result) {
                             db.close();
                             return done(err, dbUser);
-                        });*/
+                        });
                     }
                 });
             });

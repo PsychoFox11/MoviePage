@@ -6,7 +6,7 @@ router = express.Router(),
 base = 'public',
 // Mongo stuff
 crud = require('./serverModules/crud'),
-url = 'mongodb://localhost/mainDB',
+url = require('./dbConfig').url,
 ObjectID = require('mongodb').ObjectID,
 // End Mongo stuff
 loggedIn, formSettings, dataTypes;
@@ -188,7 +188,6 @@ module.exports = function (passport) {
 
     // Fetch form maker settings
     router.post('/settings', loggedIn, function (req, res) {
-        console.log('blah');
         if (formSettings) {
             res.send(JSON.stringify(formSettings));
         } else {
@@ -212,7 +211,7 @@ module.exports = function (passport) {
         crud.create(query, 'test', function (err, result) {
             if (err) {
                 console.log(err);
-                res.send(err);
+                res.send(JSON.stringify(err));
             } else {
                 // Removing _id since Mongo adds it to req.body, but we don't need it on the client side
                 delete req.body._id;
@@ -242,7 +241,7 @@ module.exports = function (passport) {
         crud.update(id, newQuery, 'test', function (err, result) {
             if (err) {
                 console.log(err);
-                res.send(err);
+                res.send(JSON.stringify(err));
             } else {
                 // Removing _id since Mongo adds it to req.body, but we don't need it on the client side
                 delete req.body._id;
@@ -262,7 +261,7 @@ module.exports = function (passport) {
         crud.delete(query, 'test', function (err, result) {
             if (err) {
                 console.log(err);
-                res.send(err);
+                res.send(JSON.stringify(err));
             } else {
                 // Removing _id since Mongo adds it to req.body, but we don't need it on the client side
                 res.send(JSON.stringify(req.body));
@@ -284,7 +283,7 @@ module.exports = function (passport) {
 
         crud.read(query, {}, searchColl, function (err, docs) {
             if (err) {
-                res.send(err);
+                res.send(JSON.stringify(err));
             } else {
                 console.log('docs');
                 // JSCS console.log(JSON.stringify(docs));
@@ -304,7 +303,7 @@ module.exports = function (passport) {
         crud.create(query, 'test', function (err, result) {
             if (err) {
                 console.log(err);
-                res.send(err);
+                res.send(JSON.stringify(err));
             } else {
                 res.send(JSON.stringify(req.body));
             }
@@ -327,7 +326,7 @@ module.exports = function (passport) {
         crud.updateMulti(changeSelect, changeDocs, 'formSettings', function (err, result) {
             if (err) {
                 console.log(err);
-                res.send(err);
+                res.send(JSON.stringify(err));
             } else {
                 console.log('Removed advanced property');
                 changeSelect = {};
@@ -342,7 +341,7 @@ module.exports = function (passport) {
                 crud.updateMulti(changeSelect, changeDocs, 'formSettings', function (err, result) {
                     if (err) {
                         console.log(err);
-                        res.send(err);
+                        res.send(JSON.stringify(err));
                     } else {
                         setFormSettings();
                         console.log('Set new advanced properties');
@@ -353,6 +352,7 @@ module.exports = function (passport) {
         });
     });
 
+    // Update Form Settings
     router.post('/updateFormSettings', loggedIn, function (req, res) {
         var query = req.body,
         oldName = query.oldName,
@@ -427,18 +427,18 @@ module.exports = function (passport) {
         crud.update({name: oldName}, finalQuery, 'formSettings', function (err, result) {
             if (err) {
                 console.log(err);
-                res.send(err);
+                res.send(JSON.stringify(err));
             } else {
                 setFormSettings();
                 crud.updateMulti(changeSelect, changeDocs, 'test', function (err, result) {
                     if (err) {
                         console.log(err);
-                        res.send(err);
+                        res.send(JSON.stringify(err));
                     } else {
                         console.log('Changed Form Setting stuff');
+                        res.send(JSON.stringify(req.body));
                     }
                 });
-                res.send(JSON.stringify(req.body));
             }
         });
     });

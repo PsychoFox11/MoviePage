@@ -116,7 +116,6 @@ function updateItem(oldValues, formSettings) {
     newItem = new FormData(),
     destroy = false,
     updateType = '',
-    includeValues = false,
     orderSelect = false,
     numberMin, numberMax, valueText;
 
@@ -214,12 +213,14 @@ function updateItem(oldValues, formSettings) {
         } else {
             newValues.values = [numberMin, numberMax];
         }
-        if (newValues.length === oldValues.length) {
-            for (var m = 0; m < newValues.length; m++) {
-                if (newValues[m] != oldValues[m]) {
-                    includeValues = true;
+        if (newValues.values.length === oldValues.values.length) {
+            for (var m = 0; m < newValues.values.length; m++) {
+                if (newValues.values[m] != oldValues.values[m]) {
+                    updateType = 'destroy';
                 }
             }
+        } else {
+            updateType = 'destroy';
         }
     }
 
@@ -268,7 +269,9 @@ function updateItem(oldValues, formSettings) {
     newItem.append('updateType', updateType);
     newItem.append('oldName', oldValues.name);
 
-    sendUpdate(newItem);
+    if (updateType) {
+        sendUpdate(newItem);
+    }
 }
 
 function sendUpdate(newItem) {

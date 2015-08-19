@@ -73,6 +73,10 @@ crud = {
         var collection;
         if (db) {
             collection = db.collection(collectionName);
+            console.log('current');
+            console.log(JSON.stringify(current));
+            console.log('update');
+            console.log(JSON.stringify(update));
             // The {w: 1} tells it to wait for the first part to be done.
             collection.update(current, update, {multi: true, w: 1}, function (err, result) {
                 callback(err, result);
