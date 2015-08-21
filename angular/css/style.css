@@ -18,9 +18,13 @@ table td {
     padding: 8px;
     border-style: solid;
     border-color: #666666;
-    background-color: #ffffff;
+    /* background-color: #ffffff; */
     text-align: right;
 }
 ul {
     list-style-type: none;
+}
+
+.table-myStriped > tbody > tr:nth-of-type(odd) {
+  background-color: #c9c9c9;
 }

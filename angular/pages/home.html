@@ -1,4 +1,54 @@
-<div class="jumbotron text-center">
-  <h1>Home Page</h1>
-  <p>{{ message }}</p>
+<div>
+    <div class="jumbotron text-center">
+         <h1>OMDB API Search</h1>
+    </div>
+<form class="form-horizontal" ng-submit="onSubmit()">
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Title:</label>
+    <div class="col-sm-10">
+      <input type="text" ng-model="title" placeholder="Title" required>
+  </div>
 </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Year:</label>
+    <div class="col-sm-10">
+      <input type="number" ng-model="year" placeholder="Year">
+  </div>
+</div> 
+<div class="form-group">
+    <div class="col-sm-10">
+      <input type="submit" value="Search" class="btn btn-success">
+  </div>
+</div>
+</form>
+<div class="container">
+    <table class="table table-myStriped" ng-hide="!keys || details">
+        <tr>
+            <th></th>
+            <th ng-repeat="key in keys">{{key}}</th>
+        </tr>
+        <tr ng-repeat="movie in results">
+            <td><button ng-click="viewDetails(movie.imdbID)">View Details</button></td>
+            <td ng-repeat="key in keys">{{movie[key]}}</td>
+        </tr>
+    </table>
+    <table class="table table-myStriped" ng-hide="!keys || !details">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="key in keys">  
+                <td>{{key}}</td>          
+                <td ng-repeat="detail in results">{{detail[key]}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+
+
+
+
