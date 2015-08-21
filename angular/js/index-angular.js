@@ -13,7 +13,7 @@ gdaApp.config(function ($routeProvider, $locationProvider) {
 
       This technique does not require Angular, only window.sessionStorage
       and some thoughtful coordination of asynchronous events.
-    */
+      */
     $routeProvider.when('/', {
         templateUrl: 'pages/home.html',
         controller: 'mainController'
@@ -32,15 +32,63 @@ gdaApp.config(function ($routeProvider, $locationProvider) {
     });
 
 });
+// Main Controller
+gdaApp.controller('mainController', ['$scope', '$http', '$window', function ($scope, $http, $window) {
+    var key = 'mainController',
+    stored;
 
-gdaApp.controller('mainController', ['$scope', '$http', function ($scope, $http) {
     $scope.message = 'Don\'t bother us!';
-    $http.jsonp('https://www.omdbapi.com/?callback=JSON_CALLBACK&s=Night%20of%20the%20Hunter&type=movie&tomatoes=true').success(function (json) {
-        console.log('right here');
-        $scope.message = JSON.stringify(json);
-    }).error(function (err) {
-        console.log(err);
-    });
+    $scope.keys = false;
+    $scope.details = false;
+    $scope.results = null;
+
+    stored = $window.sessionStorage.getItem(key);
+    if (stored) {
+        stored = JSON.parse(stored);
+        $scope.details = stored.details;
+        $scope.results = stored.results;
+        $scope.keys = stored.keys;
+    }
+
+    $scope.onSubmit = function () {
+        var query;
+
+        $scope.details = false;
+        $scope.keys = ['Title', 'Year', 'imdbID', 'Type'];
+        query = 's=' + $scope.title;
+        if ($scope.year && $scope.year !== '') {
+            query += '&y=' + $scope.year;
+        }
+        query = encodeURI(query);
+        $http.jsonp('https://www.omdbapi.com/?callback=JSON_CALLBACK&' + query).success(function (json) {
+            $scope.results = json.Search;
+            $window.sessionStorage.setItem(key, JSON.stringify({
+                details: $scope.details,
+                results: $scope.results,
+                keys: $scope.keys
+            }));
+        }).error(function (err) {
+            console.log(err);
+        });
+    };
+
+    $scope.viewDetails = function (imdbID) {
+        var query;
+
+        $scope.details = true;
+        $scope.keys = ['Title', 'Year', 'Rated', 'Released', 'Runtime', 'Genre', 'Director', 'Writer', 'Actors', 'Plot', 'Language', 'Country', 'Awards', 'imdbID', 'Type'];
+        query = 'i=' + imdbID;
+        $http.jsonp('https://www.omdbapi.com/?callback=JSON_CALLBACK&' + query).success(function (json) {
+            $scope.results = [json];
+            $window.sessionStorage.setItem(key, JSON.stringify({
+                details: $scope.details,
+                results: $scope.results,
+                keys: $scope.keys
+            }));
+        }).error(function (err) {
+            console.log(err);
+        });
+    };
 }]);
 
 gdaApp.controller('aboutController', function ($scope) {
@@ -92,14 +140,14 @@ gdaApp.controller('moviesController', ['$scope', '$window', 'dataModel', functio
 
 }]);
 
-/**
-   Use service instead of factory to make it a singleton.
-*/
-gdaApp.service('dataModel', ['$http', function ($http) {
+
+// Use service instead of factory to make it a singleton.
+
+gdaApp.factory('dataModel', ['$http', function ($http) {
     var stateKey = 'state',
-        stocks = [],
-        data = {},
-        keys, labels;
+    stocks = [],
+    data = {},
+    keys, labels;
 
     keys = ['open', 'high', 'low', 'last_trade', 'volume', '52_week_high', 'market_cap'];
     labels = {
@@ -116,26 +164,26 @@ gdaApp.service('dataModel', ['$http', function ($http) {
         eps_est_annual: 'EPS Annual Estimate'
     };
 
-    /**
-       Fetch stocks and data.
-       @returns Promise.
-    */
+
+    // Fetch stocks and data.
+    // @returns Promise.
+
     function update() {
         return $http.get('stock-data.json')
-            .then(function (res) {
-                var stockData = res.data;
-                for (var stock in stockData) {
-                    data[stock] = stockData[stock];
-                }
-            })
-            .then(function () {
-                return $http.get('stocks.json');
-            })
-            .then(function (res) {
-                res.data.forEach(function (value) {
-                    stocks.push(value);
-                });
+        .then(function (res) {
+            var stockData = res.data;
+            for (var stock in stockData) {
+                data[stock] = stockData[stock];
+            }
+        })
+        .then(function () {
+            return $http.get('stocks.json');
+        })
+        .then(function (res) {
+            res.data.forEach(function (value) {
+                stocks.push(value);
             });
+        });
     }
 
     return {
